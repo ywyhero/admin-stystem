@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>detail</title>
+    <script src="assets/js/echarts.min.js"></script>
+    <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+    <link rel="stylesheet" href="assets/css/amazeui.tree.min.css"/>
+    <link rel="stylesheet" href="assets/css/app.css">
+    <script src="assets/js/jquery.min.js"></script>
+</head>
+<body data-type="index">
+    <script src="assets/js/theme.js"></script>
+    <div class="am-g tpl-g">
+        <!-- 头部 -->
+        <header>
+            <!-- logo -->
+            <div class="am-fl tpl-header-logo">
+                Admin
+            </div>
+            <!-- 右侧内容 -->
+            <div class="tpl-header-fluid">
+                <!-- 侧边切换 -->
+                <div class="am-fl tpl-header-switch-button am-icon-list">
+                    <span>
+
+                    </span>
+                </div>
+            </div>
+
+        </header>
+        <!-- 侧边导航栏 -->
+        <div class="left-sidebar">
+            <!-- 用户信息 -->
+            <div class="tpl-sidebar-user-panel">
+                <div class="tpl-user-panel-slide-toggleable">
+                    <div class="tpl-user-panel-profile-picture">
+                        <img src="assets/img/user04.png" alt="">
+                    </div>
+                    <span class="user-panel-logged-in-text">
+                        <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
+                        禁言小张
+                    </span>
+                </div>
+            </div>
+
+            <!-- 菜单 -->
+            <ul class="sidebar-nav">
+                <li class="sidebar-nav-heading">
+                    <span class="sidebar-nav-heading-info"> MAIN NAVIGATION</span>
+                </li>
+                <li class="sidebar-nav-link">
+                    <a href="index.html" class="active">
+                        <i class="am-icon-home sidebar-nav-link-logo"></i> 控制面板
+                    </a>
+                </li>
+                <li class="sidebar-nav-link">
+                    <!-- <a href="#">
+                        <i class="am-icon-table sidebar-nav-link-logo"></i> 设备列表
+                    </a> -->
+                    <ul class="am-tree am-tree-folder-select" role="tree" id="myTreeSelectableFolder">
+                        <li class="am-tree-branch am-hide" data-template="treebranch" role="treeitem" aria-expanded="false">
+                            <div class="am-tree-branch-header">
+                            <button class="am-tree-icon am-tree-icon-caret am-icon-caret-right"><span class="am-sr-only">Open</span></button>
+                            <button class="am-tree-branch-name">
+                                <span class="am-tree-icon am-tree-icon-folder"></span>
+                                <span class="am-tree-label"></span>
+                            </button>
+                            </div>
+                            <ul class="am-tree-branch-children" role="group"></ul>
+                            <div class="am-tree-loader" role="alert">Loading...</div>
+                        </li>
+                        <li class="am-tree-item am-hide" data-template="treeitem" role="treeitem">
+                            <button class="am-tree-item-name">
+                                <span class="am-tree-icon am-tree-icon-folder"></span>
+                                <span class="am-tree-label"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+
+
+        <!-- 内容区域 -->
+        <div class="tpl-content-wrapper">
+            <div class="container-fluid am-cf">
+                <div class="row">
+                    <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+                        <div class="page-header-heading">
+                            <span class="am-icon-home page-header-heading-icon"></span> 设备列表
+                            <small>网关#1</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-content am-cf">
+                <div class="row am-cf">
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
+                        <div class="am-cf">
+                            <ul class="am-list am-list-static am-list-border">
+                                <li class="admin-content-item-list">
+                                    <img class="admin-content-item-img" src="./assets/img/user03.png" /> 
+                                    <div class="admin-content-item-name">
+                                        <span>网关</span>
+                                        <span>别名：1楼左上角</span>
+                                    </div>
+                                </li>
+                                <li class="admin-content-item">
+                                    <input class="admin-content-item-input" disabled="false" type="text" value="地址：上海市静安区南京西路2188号1F">
+                                    <span class="am-icon-edit admin-content-item-icon admin-content-item-edit"></span>
+                                </li>
+                                <li class="admin-content-item">
+                                    <span>当前状态</span>
+                                    <span class="am-icon-pause admin-content-item-icon"></span>
+                                    <span class="am-icon-play admin-content-item-icon" style="display: none"></span>
+                                </li>
+                                <li class="admin-content-item"> 
+                                    <span>可使用设备</span>
+                                    <span>4</span>
+                                </li>
+                                <li class="admin-content-item">
+                                    <span>总设备数</span>
+                                    <span>10</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row am-cf">
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">
+                        <div class="am-cf admin-detail-list">
+                            <img class="admin-detail-img" src="./assets/img/user04.png" alt="">
+                            <div class="admin-detail-content">
+                                <div class="admin-detail-content-left">
+                                    <span class="admin-detail-content-device-name">#2</span>
+                                    <span class="admin-detail-content-user-name">无人</span>
+                                </div>
+                                <div class="admin-detail-content-right">
+                                    <span class="admin-detail-content-status">空闲</span>
+                                    <div class="admin-detail-content-btns">
+                                        <span class="admin-detail-content-open">打开</span>
+                                        <span class="admin-detail-content-close">停用</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./assets/js/amazeui.min.js"></script>
+    <script src="./assets/js/amazeui.tree.min.js"></script>
+    <script src="assets/js/detail.js"></script>
+    
+    </body>
+</html>

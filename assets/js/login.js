@@ -19,7 +19,4 @@
             }
         })
     })
-    $.get('https://xiaoce-timeline-api-ms.juejin.im/v1/getListByLastTime?uid=&client_id=&token=&src=web&pageNum=1', function(data) {
-        console.log(data)
-    })
 })()

@@ -1,63 +1,137 @@
 $(function () {
+    var token = window.sessionStorage.getItem('token');
+    var id =  window.sessionStorage.getItem('aid');
+    $.ajax({
+        type: 'GET',
+        url: 'http://47.52.236.134:3389/v1/admins?aid=' + id,
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
+        success: function(res) {
+            if(res.code == 0) {
+                $('.admin-username').text(res.admin.info.nickName);
+                $('.admin-user-avatar').attr('src',res.admin.info.avatarUrl);
+                var gwLists = res.admin.gwList.list;
+                var tempData = [];
+                var gateWaysTotal = gwLists.length;
+                var usePercent = 0, 
+                    availableLocks = 0,
+                    totalLocks = 0,
+                    batteryLowLocks = 0,
+                    menu = [],
+                    mapArr = [],
+                    htmls = [],
+                    usePeople = 0;
+                
+                $('.admin-gateways-total').text(gateWaysTotal)
+                for(var i = 0, len = gwLists.length; i < len; i++) {
+                    var obj = {
+                        value: gwLists[i].totalLocks,
+                        name: gwLists[i].alias
+                    }
+                    var menuObj = {
+                        title: '网关#' + gwLists[i].gid,
+                        type: 'folder',
+                        products: [
+                            {
+                                title: gwLists[i].alias,
+                                type: 'item',
+                                id: gwLists[i].gid,
+                            }
+                        ]
+                    }
+                    var mapObj = {
+                        point: gwLists[i].latitude + ',' + gwLists[i].longitude  
+                    }
+                    mapArr.push(mapObj)
+                    menu.push(menuObj)
+                    tempData.push(obj)
+                    availableLocks += gwLists[i].availableLocks; //该网关下管理的锁当前空闲可用总数
+                    totalLocks += gwLists[i].totalLocks; //该网关下管理的锁设备总数
+                    batteryLowLocks += gwLists[i].batteryLowLocks; //电量低
+                    usePeople += (gwLists[i].totalLocks - gwLists[i].bannedLocks - gwLists[i].availableLocks - gwLists[i].batteryLowLocks)
 
+                    var status = null;
+                    if( gwLists[i].status == 1) {
+                        status = '正常'
+                    } else if(gwLists[i].status == 0) {
+                        status = '离线'
+                    } else if(gwLists[i].status == -1) {
+                        status = '禁用'
+                    }
+                    var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-gateway-list">'
+                                + '<div class="am-cf">'
+                                +   '<ul class="am-list am-list-static am-list-border">'
+                                +       '<li class="admin-content-item-list">'
+                                +           '<img class="admin-content-item-img" src="'+ gwLists[i].qrcode +'" />'
+                                +            '<div class="admin-content-item-name">'
+                                +                '<span>网关'+ gwLists[i].gid +'</span>'
+                                +               ' <span>别名：'+ gwLists[i].alias +'</span>'
+                                +           ' </div>'
+                                +        '</li>'
+                                +        '<li class="admin-content-item">'
+                                +            '地址：'+ gwLists[i].formatted_address +''
+                                +        '</li>'
+                                +        '<li class="admin-content-item">'
+                                +            '<span>当前状态</span>'
+                                +            '<span>' + status+ '</span>'
+                                +        '</li>'
+                                +        '<li class="admin-content-item"> '
+                                +            '<span>可使用设备</span>'
+                                +            '<span>'+ gwLists[i].availableLocks +'</span>'
+                                +        '</li>'
+                                +        '<li class="admin-content-item">'
+                                +            '<span>总设备数</span>'
+                                +            '<span>'+ gwLists[i].totalLocks +'</span>'
+                                +        '</li>'
+                                +    '</ul>'
+                                +'</div>'
+                           +'</div>';
+                           htmls.push(html)
+                }
+                $('.admin-gateways-lists').append(htmls.reverse())
+                usePercent = Math.round((totalLocks - availableLocks) / totalLocks) + '%'
+                $('.admin-use-percent').text(usePercent);
+                $('.admin-electric-low').text(batteryLowLocks);
+                $('.admin-use-people').text(usePeople)
+                chartData(tempData);
+                map_init(mapArr);
+
+
+                $('#myTreeSelectableFolder').tree({
+                    dataSource: function(options, callback) {
+                      // 模拟异步加载
+                      setTimeout(function() {
+                        callback({data: options.products || menu.reverse()});
+                      }, 400);
+                    },
+                    multiSelect: false,
+                    cacheItems: true,
+                    folderSelect: false
+                });
+                $('#myTreeSelectableFolder').on('selected.tree.amui', function (event, data) {
+                    // do something with data: { selected: [array], target: [object] }
+                    console.log(data)
+                    console.log(event)
+                });
+            } else if(res.code == -1) {
+                window.location.href = '/index.html'
+            }
+           
+        }
+    })
     autoLeftNav();
-    map_init();
-    chartData();
+   
     $(window).resize(function () {
         autoLeftNav();
     });
-    // $('#myTreeSelectableFolder').tree();
-    var data = [
-        {
-            title: '苹果公司',
-            type: 'folder',
-            products: [
-                {
-                    title: 'iPhone',
-                    type: 'folder',
-                    products: [
-                        {
-                            title: 'iMac',
-                            type: 'item'
-                        },
-                        {
-                            title: 'MacBook Pro',
-                            type: 'item'
-                        }
-                    ]
-                },
-                {
-                    title: 'iMac',
-                    type: 'item'
-                },
-                {
-                    title: 'MacBook Pro',
-                    type: 'item'
-                }
-            ]
-        }
-    ];
-    $('#myTreeSelectableFolder').tree({
-        dataSource: function(options, callback) {
-          // 模拟异步加载
-          setTimeout(function() {
-            callback({data: options.products || data});
-          }, 400);
-        },
-        multiSelect: false,
-        cacheItems: true,
-        folderSelect: false
-    });
-    $('#myTreeSelectableFolder').on('selected.tree.amui', function (event, data) {
-        // do something with data: { selected: [array], target: [object] }
-        console.log(data)
-        console.log(event)
-    });
+   
+    
 })
 
 
 // 页面数据
-function chartData() {
+function chartData(data) {
     // ==========================
     // 百度图表A http://echarts.baidu.com/
     // ==========================
@@ -98,12 +172,7 @@ function chartData() {
                         abelLine: { show: true }
                     }
                 },
-                data: [
-                    { value: 335, name: '直接访问' },
-                    { value: 310, name: '邮件营销' },
-                    { value: 234, name: '联盟广告' },
-                    { value: 135, name: '视频广告' }
-                ],
+                data: data,
                 color: ['#2d8cf0', '#19be6b', '#ff9900', '#ed3f14']
             }
         ]
@@ -153,13 +222,7 @@ $('.sidebar-nav-sub-title').on('click', function () {
 
 
 //map
-function map_init(){
-    var markerArr = [
-        { title: "名称：广州火车站", point: "0.264531,23.157003", address: "广东省广州市广州火车站", tel: "12306" },  
-        { title: "名称：广州塔（赤岗塔）", point: "10.330934,23.113401", address: "广东省广州市广州塔（赤岗塔） ", tel: "18500000000" },  
-        { title: "名称：广州动物园", point: "-10.312213,23.147267", address: "广东省广州市广州动物园", tel: "18500000000" },  
-        { title: "名称：天河公园", point: "3.372867,23.134274", address: "广东省广州市天河公园", tel: "18500000000" }  
-      ];
+function map_init(markerArr){
     var map = new BMap.Map("allmap"); // 创建Map实例  
     map.centerAndZoom(new BMap.Point(0, 0), 1); // 初始化地图,设置中心点坐标和地图级别。  
     map.enableScrollWheelZoom(true); //启用滚轮放大缩小  

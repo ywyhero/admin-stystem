@@ -1,22 +1,26 @@
-(function () {
+
+$(function () {
     $('#login-btn').on('click', function(){
-        var USERNAME = $('#user-name').val();
-        var PASSWORD = $('#user-password').val();
+        var USERNAME = $('#user-name').val().trim();
+        var PASSWORD = $('#user-password').val().trim();
         if(USERNAME === '' || PASSWORD === '') {
-            $('#doc-modal-1').on('open.modal.amui', function(){
-                $('.modal-content').html('登陆名或密码为空')
-            });
             return
         }
         $.ajax({
             type: 'GET',
             headers: {
-                "Authorization": "Basic " + btoa(USERNAME + "." + PASSWORD)
+                "Authorization": "Basic " + btoa(USERNAME + ":" + PASSWORD)
             },
+            dataType: 'json',
             url: "http://47.52.236.134:3389/v1/admins/token",
             success: function (res) {
-                console.log(res)
+                if(res.code === 200) {
+                    var token = res.data.token;
+                    window.sessionStorage.setItem('token', token)
+                    window.sessionStorage.setItem('aid', res.data.id)
+                    window.location.href = '/main.html'
+                }
             }
         })
     })
-})()
+})

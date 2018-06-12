@@ -1,6 +1,11 @@
 $(function () {
-    var token = window.sessionStorage.getItem('token');
-    var id =  window.sessionStorage.getItem('aid');
+    var token = window.sessionStorage.getItem('token'); //获取token
+    var id =  window.sessionStorage.getItem('aid'); //获取用户id
+    //点击头像跳转
+    $('.admin-user-info').on('click', function() {
+        window.location.href = '/info.html?aid=' + id;
+    })
+    //获取页面信息
     $.ajax({
         type: 'GET',
         url: 'http://47.52.236.134:3389/v1/admins?aid=' + id,
@@ -11,6 +16,11 @@ $(function () {
             if(res.code == 0) {
                 $('.admin-username').text(res.admin.info.nickName);
                 $('.admin-user-avatar').attr('src',res.admin.info.avatarUrl);
+                var loginInfo = {
+                    name: res.admin.info.nickName,
+                    avatarUrl: res.admin.info.avatarUrl
+                }
+                window.sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo))
                 var gwLists = res.admin.gwList.list;
                 var tempData = [];
                 var gateWaysTotal = gwLists.length;
@@ -43,14 +53,17 @@ $(function () {
                     var mapObj = {
                         point: gwLists[i].latitude + ',' + gwLists[i].longitude  
                     }
+                    //地图数据
                     mapArr.push(mapObj)
+                    //多级菜单
                     menu.push(menuObj)
+                    //饼图数据
                     tempData.push(obj)
                     availableLocks += gwLists[i].availableLocks; //该网关下管理的锁当前空闲可用总数
                     totalLocks += gwLists[i].totalLocks; //该网关下管理的锁设备总数
                     batteryLowLocks += gwLists[i].batteryLowLocks; //电量低
-                    usePeople += (gwLists[i].totalLocks - gwLists[i].bannedLocks - gwLists[i].availableLocks - gwLists[i].batteryLowLocks)
-
+                    usePeople += (gwLists[i].totalLocks - gwLists[i].bannedLocks - gwLists[i].availableLocks - gwLists[i].batteryLowLocks) //使用人数
+                    //网关状态
                     var status = null;
                     if( gwLists[i].status == 1) {
                         status = '正常'
@@ -59,10 +72,11 @@ $(function () {
                     } else if(gwLists[i].status == -1) {
                         status = '禁用'
                     }
+                    //网关列表
                     var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-gateway-list">'
                                 + '<div class="am-cf">'
                                 +   '<ul class="am-list am-list-static am-list-border">'
-                                +       '<li class="admin-content-item-list">'
+                                +       '<li class="admin-content-item-list" data-id=' + gwLists[i].gid + '>'
                                 +           '<img class="admin-content-item-img" src="'+ gwLists[i].qrcode +'" />'
                                 +            '<div class="admin-content-item-name">'
                                 +                '<span>网关'+ gwLists[i].gid +'</span>'
@@ -94,30 +108,41 @@ $(function () {
                 $('.admin-use-percent').text(usePercent);
                 $('.admin-electric-low').text(batteryLowLocks);
                 $('.admin-use-people').text(usePeople)
-                chartData(tempData);
-                map_init(mapArr);
-
-
+                chartData(tempData); //echarts饼图
+                map_init(mapArr);//地图初始化
+                window.sessionStorage.setItem('adminMenu', JSON.stringify(menu))
+                //多级菜单
                 $('#myTreeSelectableFolder').tree({
                     dataSource: function(options, callback) {
                       // 模拟异步加载
                       setTimeout(function() {
-                        callback({data: options.products || menu.reverse()});
+                        callback({data: options.products || menu});
                       }, 400);
                     },
                     multiSelect: false,
                     cacheItems: true,
                     folderSelect: false
                 });
+                //多级菜单点击事件-网管详情
                 $('#myTreeSelectableFolder').on('selected.tree.amui', function (event, data) {
-                    // do something with data: { selected: [array], target: [object] }
-                    console.log(data)
-                    console.log(event)
+                    var gid = data.target.id;
+                    window.location.href = '/detail.html?aid=' + id  + '&gw=' + gid
+                    
                 });
+
+                //网关点击事件-网管详情
+                $(".admin-content-item-list").on('click', function(e) {
+                    var gid = e.target.dataset.id;
+                    window.location.href = '/detail.html?aid=' + id  + '&gw=' + gid
+
+                })  
             } else if(res.code == -1) {
                 window.location.href = '/index.html'
             }
            
+        },
+        error: function(err) {
+            window.location.href = '/index.html'
         }
     })
     autoLeftNav();
@@ -189,7 +214,6 @@ function chartData(data) {
 
 function autoLeftNav() {
     $('.tpl-header-switch-button').on('click', function () {
-        console.log($('.left-sidebar').hasClass('active'))
         if ($('.left-sidebar').hasClass('active')) {
             if ($(window).width() > 1024) {
                 $('.tpl-content-wrapper').removeClass('active');

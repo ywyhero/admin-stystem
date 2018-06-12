@@ -19,7 +19,7 @@
 
 </head>
 
-<body data-type="index">
+<body>
     <script src="assets/js/theme.js"></script>
     <div class="am-g tpl-g">
         <!-- 头部 -->
@@ -44,7 +44,7 @@
             <!-- 用户信息 -->
             <div class="tpl-sidebar-user-panel">
                 <div class="tpl-user-panel-slide-toggleable">
-                    <div class="tpl-user-panel-profile-picture">
+                    <div class="tpl-user-panel-profile-picture admin-user-info">
                         <img class="admin-user-avatar" src="assets/img/user04.png" alt="">
                     </div>
                     <span class="user-panel-logged-in-text">
@@ -68,7 +68,25 @@
                     <!-- <a href="#">
                         <i class="am-icon-table sidebar-nav-link-logo"></i> 设备列表
                     </a> -->
-                    <ul class="am-tree am-tree-folder-select" role="tree" id="myTreeSelectableFolder">
+                    <ul class="am-tree" id="myTreeSelectableFolder">
+                        <li class="am-tree-branch am-hide" data-template="treebranch">
+                          <div class="am-tree-branch-header">
+                            <button class="am-tree-branch-name">
+                              <span class="am-tree-icon am-tree-icon-folder"></span>
+                              <span class="am-tree-label"></span>
+                            </button>
+                          </div>
+                          <ul class="am-tree-branch-children"></ul>
+                          <div class="am-tree-loader"><span class="am-icon-spin am-icon-spinner"></span></div>
+                        </li>
+                        <li class="am-tree-item am-hide" data-template="treeitem">
+                          <button class="am-tree-item-name">
+                            <span class="am-tree-icon am-tree-icon-item"></span>
+                            <span class="am-tree-label"></span>
+                          </button>
+                        </li>
+                      </ul>
+                    <!-- <ul class="am-tree am-tree-folder-select" role="tree" id="myTreeSelectableFolder">
                         <li class="am-tree-branch am-hide" data-template="treebranch" role="treeitem" aria-expanded="false">
                             <div class="am-tree-branch-header">
                             <button class="am-tree-icon am-tree-icon-caret am-icon-caret-right"><span class="am-sr-only">Open</span></button>
@@ -86,7 +104,7 @@
                                 <span class="am-tree-label"></span>
                             </button>
                         </li>
-                    </ul>
+                    </ul> -->
                 </li>
 
             </ul>

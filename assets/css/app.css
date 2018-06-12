@@ -2006,6 +2006,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   align-items: center;
   background: #ff9900;
   border: 0;
+  cursor: pointer;
 }
 .admin-content-item-name{
   display: flex;
@@ -2058,11 +2059,16 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-detail-content-open,
 .admin-detail-content-close{
   cursor: pointer;
+  margin-right: 10px;
 }
 .admin-content-item-input{
   outline: none;
   border: 0;
   width: 95%;
+  resize: none;
+}
+.admin-content-item-input.active{
+  border: 1px solid #000;
 }
 .am-list .admin-info-item-list:first-child{
   display: flex;
@@ -2099,4 +2105,32 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 }
 .admin-gateway-list{
   float: left !important;
+}
+.admin-detail-status-play,
+.admin-detail-status-offline,
+.admin-detail-status-pause{
+  display: none;
+}
+.admin-user-avatar{
+  cursor: pointer;
+}
+.admin-info-item-password{
+  border: 0;
+  outline: none;
+  width: 90%;
+  text-align: right;
+}
+.admin-info-item-password.active{
+  border: 1px solid #000;
+}
+.admin-toast{
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 4px;
+  padding: 10px;
+  display: none;
 }

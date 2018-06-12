@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>info</title>
     <script src="assets/js/echarts.min.js"></script>
     <link rel="stylesheet" href="assets/css/amazeui.min.css" />
-    <link rel="stylesheet" href="assets/css/amazeui.tree.min.css"/>
+    <link rel="stylesheet" href="assets/css/amazeui.tree.min.css" />
     <link rel="stylesheet" href="assets/css/app.css">
     <script src="assets/js/jquery.min.js"></script>
 </head>
+
 <body data-type="index">
     <script src="assets/js/theme.js"></script>
     <div class="am-g tpl-g">
@@ -37,11 +40,11 @@
             <div class="tpl-sidebar-user-panel">
                 <div class="tpl-user-panel-slide-toggleable">
                     <div class="tpl-user-panel-profile-picture">
-                        <img src="assets/img/user04.png" alt="">
+                        <img class="admin-info-avatar" src="assets/img/user04.png" alt="">
                     </div>
                     <span class="user-panel-logged-in-text">
                         <i class="am-icon-circle-o am-text-success tpl-user-panel-status-icon"></i>
-                        禁言小张
+                        <span class="admin-info-usename">禁言小张</span>
                     </span>
                 </div>
             </div>
@@ -60,25 +63,27 @@
                     <!-- <a href="#">
                         <i class="am-icon-table sidebar-nav-link-logo"></i> 设备列表
                     </a> -->
-                    <ul class="am-tree am-tree-folder-select" role="tree" id="myTreeSelectableFolder">
-                        <li class="am-tree-branch am-hide" data-template="treebranch" role="treeitem" aria-expanded="false">
+                    <ul class="am-tree" id="admin-info-tree">
+                        <li class="am-tree-branch am-hide" data-template="treebranch">
                             <div class="am-tree-branch-header">
-                            <button class="am-tree-icon am-tree-icon-caret am-icon-caret-right"><span class="am-sr-only">Open</span></button>
-                            <button class="am-tree-branch-name">
-                                <span class="am-tree-icon am-tree-icon-folder"></span>
-                                <span class="am-tree-label"></span>
-                            </button>
+                                <button class="am-tree-branch-name">
+                                    <span class="am-tree-icon am-tree-icon-folder"></span>
+                                    <span class="am-tree-label"></span>
+                                </button>
                             </div>
-                            <ul class="am-tree-branch-children" role="group"></ul>
-                            <div class="am-tree-loader" role="alert">Loading...</div>
+                            <ul class="am-tree-branch-children"></ul>
+                            <div class="am-tree-loader">
+                                <span class="am-icon-spin am-icon-spinner"></span>
+                            </div>
                         </li>
-                        <li class="am-tree-item am-hide" data-template="treeitem" role="treeitem">
+                        <li class="am-tree-item am-hide" data-template="treeitem">
                             <button class="am-tree-item-name">
-                                <span class="am-tree-icon am-tree-icon-folder"></span>
+                                <span class="am-tree-icon am-tree-icon-item"></span>
                                 <span class="am-tree-label"></span>
                             </button>
                         </li>
                     </ul>
+
                 </li>
 
             </ul>
@@ -102,7 +107,7 @@
                         <div class="am-cf">
                             <ul class="am-list am-list-static am-list-border">
                                 <li class="admin-info-item-list">
-                                    <img class="admin-info-item-img" src="./assets/img/user03.png" /> 
+                                    <img class="admin-info-item-img" src="./assets/img/user03.png" />
                                     <span class="admin-info-name">美女管理员</span>
                                     <span class="admin-info-level">级别：高级管理员</span>
                                 </li>
@@ -112,7 +117,7 @@
                                 </li>
                                 <li class="admin-info-item-list">
                                     <span class="admin-info-item-left">状态</span>
-                                    <span class="admin-info-item-right">正常</span>
+                                    <span class="admin-info-item-right admin-info-item-status">正常</span>
                                 </li>
                                 <li class="admin-info-item-list">
                                     <span class="admin-info-item-left">用户名</span>
@@ -120,7 +125,7 @@
                                 </li>
                                 <li class="admin-info-item-list">
                                     <span class="admin-info-item-left">密码</span>
-                                    <span class="admin-info-item-right">*********</span>
+                                    <input type="text" disabled="true" class="admin-info-item-right admin-info-item-password" value="*********"/>
                                 </li>
                                 <li class="admin-info-item-list">
                                     <span class="admin-info-btn">修改密码</span>
@@ -132,9 +137,11 @@
             </div>
         </div>
     </div>
+    <div class="admin-toast"></div>
     <script src="./assets/js/amazeui.min.js"></script>
     <script src="./assets/js/amazeui.tree.min.js"></script>
-    <script src="assets/js/detail.js"></script>
-    
-    </body>
+    <script src="assets/js/info.js"></script>
+
+</body>
+
 </html>

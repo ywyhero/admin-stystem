@@ -206,45 +206,6 @@ function chartData(data) {
     echartsC.setOption(optionC);
 }
 
-
-
-
-// 侧边菜单开关
-
-
-function autoLeftNav() {
-    $('.tpl-header-switch-button').on('click', function () {
-        if ($('.left-sidebar').hasClass('active')) {
-            if ($(window).width() > 1024) {
-                $('.tpl-content-wrapper').removeClass('active');
-            }
-            $('.left-sidebar').removeClass('active');
-
-        } else {
-            if ($(window).width() > 1024) {
-                $('.tpl-content-wrapper').addClass('active');
-            }
-            $('.left-sidebar').addClass('active');
-
-        }
-    })
-
-    if ($(window).width() < 1024) {
-        $('.left-sidebar').addClass('active');
-    } else {
-        $('.left-sidebar').removeClass('active');
-    }
-}
-
-
-// 侧边菜单
-$('.sidebar-nav-sub-title').on('click', function () {
-    $(this).siblings('.sidebar-nav-sub').slideToggle(80)
-        .end()
-        .find('.sidebar-nav-sub-ico').toggleClass('sidebar-nav-sub-ico-rotate');
-})
-
-
 //map
 function map_init(markerArr){
     var map = new BMap.Map("allmap"); // 创建Map实例  

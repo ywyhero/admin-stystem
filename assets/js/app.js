@@ -103,6 +103,7 @@ $(function () {
                            +'</div>';
                            htmls.push(html)
                 }
+                menu = menu.reverse()
                 $('.admin-gateways-lists').append(htmls.reverse())
                 usePercent = Math.round((totalLocks - availableLocks) / totalLocks) + '%'
                 $('.admin-use-percent').text(usePercent);
@@ -110,13 +111,13 @@ $(function () {
                 $('.admin-use-people').text(usePeople)
                 chartData(tempData); //echarts饼图
                 map_init(mapArr);//地图初始化
-                window.sessionStorage.setItem('adminMenu', JSON.stringify(menu.reverse()))
+                window.sessionStorage.setItem('adminMenu', JSON.stringify(menu))
                 //多级菜单
                 $('#myTreeSelectableFolder').tree({
                     dataSource: function(options, callback) {
                       // 模拟异步加载
                       setTimeout(function() {
-                        callback({data: options.products || menu.reverse()});
+                        callback({data: options.products || menu});
                       }, 400);
                     },
                     multiSelect: false,

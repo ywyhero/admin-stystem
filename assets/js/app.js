@@ -21,7 +21,7 @@ $(function () {
                     avatarUrl: res.admin.info.avatarUrl
                 }
                 window.sessionStorage.setItem('loginInfo', JSON.stringify(loginInfo))
-                var gwLists = res.admin.gwList.list;
+                var gwLists = res.admin.gwList;
                 var tempData = [];
                 var gateWaysTotal = gwLists.length;
                 var usePercent = 0, 
@@ -51,7 +51,7 @@ $(function () {
                         ]
                     }
                     var mapObj = {
-                        point: gwLists[i].latitude + ',' + gwLists[i].longitude  
+                        point: gwLists[i].address.location.latitude + ',' + gwLists[i].address.location.longitude  
                     }
                     //地图数据
                     mapArr.push(mapObj)
@@ -59,17 +59,17 @@ $(function () {
                     menu.push(menuObj)
                     //饼图数据
                     tempData.push(obj)
-                    availableLocks += gwLists[i].availableLocks; //该网关下管理的锁当前空闲可用总数
-                    totalLocks += gwLists[i].totalLocks; //该网关下管理的锁设备总数
-                    batteryLowLocks += gwLists[i].batteryLowLocks; //电量低
+                    availableLocks += Number(gwLists[i].availableLocks); //该网关下管理的锁当前空闲可用总数
+                    totalLocks += Number(gwLists[i].totalLocks); //该网关下管理的锁设备总数
+                    batteryLowLocks += Number(gwLists[i].batteryLowLocks) //电量低
                     usePeople += (gwLists[i].totalLocks - gwLists[i].bannedLocks - gwLists[i].availableLocks - gwLists[i].batteryLowLocks) //使用人数
                     //网关状态
                     var status = null;
-                    if( gwLists[i].status == 1) {
+                    if( gwLists[i].currentStatus == 1) {
                         status = '正常'
-                    } else if(gwLists[i].status == 0) {
+                    } else if(gwLists[i].currentStatus == 0) {
                         status = '离线'
-                    } else if(gwLists[i].status == -1) {
+                    } else if(gwLists[i].currentStatus == -1) {
                         status = '禁用'
                     }
                     //网关列表
@@ -84,7 +84,7 @@ $(function () {
                                 +           ' </div>'
                                 +        '</li>'
                                 +        '<li class="admin-content-item">'
-                                +            '地址：'+ gwLists[i].formatted_address +''
+                                +            '地址：'+ gwLists[i].address.formatted_address +''
                                 +        '</li>'
                                 +        '<li class="admin-content-item">'
                                 +            '<span>当前状态</span>'
@@ -110,27 +110,27 @@ $(function () {
                 $('.admin-use-people').text(usePeople)
                 chartData(tempData); //echarts饼图
                 map_init(mapArr);//地图初始化
-                window.sessionStorage.setItem('adminMenu', JSON.stringify(menu))
+                window.sessionStorage.setItem('adminMenu', JSON.stringify(menu.reverse()))
                 //多级菜单
                 $('#myTreeSelectableFolder').tree({
                     dataSource: function(options, callback) {
                       // 模拟异步加载
                       setTimeout(function() {
-                        callback({data: options.products || menu});
+                        callback({data: options.products || menu.reverse()});
                       }, 400);
                     },
                     multiSelect: false,
                     cacheItems: true,
                     folderSelect: false
                 });
-                //多级菜单点击事件-网管详情
+                //多级菜单点击事件-网关详情
                 $('#myTreeSelectableFolder').on('selected.tree.amui', function (event, data) {
                     var gid = data.target.id;
                     window.location.href = '/detail.html?aid=' + id  + '&gw=' + gid
                     
                 });
 
-                //网关点击事件-网管详情
+                //网关点击事件-网关详情
                 $(".admin-content-item-list").on('click', function(e) {
                     var gid = e.target.dataset.id;
                     window.location.href = '/detail.html?aid=' + id  + '&gw=' + gid
@@ -145,11 +145,6 @@ $(function () {
             window.location.href = '/index.html'
         }
     })
-    autoLeftNav();
-   
-    $(window).resize(function () {
-        autoLeftNav();
-    });
    
     
 })

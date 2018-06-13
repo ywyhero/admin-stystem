@@ -34,6 +34,8 @@ $(function () {
                 $('.admin-info-item-img').attr('src', res.admin.info.avatarUrl)
                 $('.admin-info-name').text(res.admin.info.nickName)
                 $('.admin-info-level').text('级别：' + res.admin.level)
+                $('.admin-info-owenr-company').text(res.admin.owner.address)
+                $('.admin-info-item-login').text(res.admin.info.login)
                 var status = null;
                 if (res.admin.status == 1) {
                     status = '正常'

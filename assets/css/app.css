@@ -2091,6 +2091,8 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 }
 .admin-info-item-right{
   color: #0850ac;
+  width: 80%;
+  text-align: right;
 }
 .admin-info-btn {
   width: 80%;

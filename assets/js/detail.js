@@ -74,9 +74,10 @@ $(function () {
                     } else if (lists[i].currentStatus == -1) {
                         currentStatus = '禁用'
                     }
+                    var imgSrc = lists[i].currentUser.avatarUrl ? lists[i].currentUser.avatarUrl : 'assets/img/user03.png'
                     var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">' +
                         '<div class="am-cf admin-detail-list">' +
-                        '<img class="admin-detail-img" src="' + lists[i].currentUser.avatarUrl + '" alt="">' +
+                        '<img class="admin-detail-img" src="' +  imgSrc + '" alt="">' +
                         '<div class="admin-detail-content">' +
                         '<div class="admin-detail-content-left">' +
                         '<span class="admin-detail-content-device-name">设备名：' + lists[i].alias + '</span>' +

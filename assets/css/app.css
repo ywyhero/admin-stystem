@@ -2060,6 +2060,14 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-detail-content-close{
   cursor: pointer;
   margin-right: 10px;
+  background: #19be6b;
+  padding: 5px;
+  border-radius: 4px;
+  color: #fff;
+}
+.admin-detail-content-open.active,
+.admin-detail-content-close.active{
+  background: #c1c1c1;
 }
 .admin-content-item-input{
   outline: none;
@@ -2130,9 +2138,10 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.3);
-  color: #fff;
+  background: rgba(255, 69, 0, 0.8);
+  color: #333;
   border-radius: 4px;
   padding: 10px;
   display: none;
+  z-index: 99999;
 }

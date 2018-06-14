@@ -64,15 +64,22 @@ $(function () {
                 $('.admin-detail-use-count').text(res.gateway.lockList.available);
                 $('.admin-detail-device-total').text(res.gateway.lockList.total);
                 var lists = res.gateway.lockList.list;
-                var htmls = []
+                var htmls = [];
                 for (var i = 0; i < lists.length; i++) {
+                    var closeText = '';
                     var currentStatus = null;
                     if (lists[i].currentStatus == 1) {
-                        currentStatus = '正常'
+                        currentStatus = '使用中'
+                        closeText = '禁用'
                     } else if (lists[i].currentStatus == 0) {
-                        currentStatus = '离线'
+                        currentStatus = '待使用'
+                        closeText = '禁用'
                     } else if (lists[i].currentStatus == -1) {
                         currentStatus = '禁用'
+                        closeText = '使用'
+                    } else if (lists[i].currentStatus == -2) {
+                        currentStatus = '电量低';
+                        closeText = '使用/禁用';
                     }
                     var imgSrc = lists[i].currentUser.avatarUrl ? lists[i].currentUser.avatarUrl : 'assets/img/user03.png'
                     var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">' +
@@ -80,14 +87,14 @@ $(function () {
                         '<img class="admin-detail-img" src="' +  imgSrc + '" alt="">' +
                         '<div class="admin-detail-content">' +
                         '<div class="admin-detail-content-left">' +
-                        '<span class="admin-detail-content-device-name">设备名：' + lists[i].alias + '</span>' +
-                        '<span class="admin-detail-content-user-name">用户名：' + lists[i].currentUser.nickName + '</span>' +
+                        '<span class="admin-detail-content-device-name">' + lists[i].alias + '</span>' +
+                        '<span class="admin-detail-content-user-name">' + lists[i].currentUser.nickName + '</span>' +
                         '</div>' +
                         '<div class="admin-detail-content-right">' +
                         '<span class="admin-detail-content-status">' + currentStatus + '</span>' +
                         '<div class="admin-detail-content-btns">' +
-                        '<span class="admin-detail-content-open" data-lid="' + lists[i].lid + '">打开</span>' +
-                        '<span class="admin-detail-content-close" data-lid="' + lists[i].lid + '">停用</span>' +
+                        '<span class="admin-detail-content-open" data-index="' + i + '" data-currentstatus="' + lists[i].currentStatus + '" data-lid="' + lists[i].lid + '">打开</span>' +
+                        '<span class="admin-detail-content-close" data-index="' + i + '" data-currentstatus="' + lists[i].currentStatus + '" data-lid="' + lists[i].lid + '">'+closeText+'</span>' +
                         '</div>' +
                         '</div>' +
                         '</div>' +
@@ -96,6 +103,15 @@ $(function () {
                     htmls.push(html)
                 }
                 $('.admin-detail-lists').append(htmls)
+
+                for (var i = 0; i < lists.length; i++) {
+                    if(lists[i].currentStatus == -2){
+                        $('.admin-detail-item').eq(i).find('.admin-detail-content-open').addClass('active')
+                        $('.admin-detail-item').eq(i).find('.admin-detail-content-close').addClass('active')
+                    } else if(lists[i].currentStatus == 1) {
+                        $('.admin-detail-item').eq(i).find('.admin-detail-content-open').addClass('active')
+                    }
+                }
                 //修改地址
                 $('.admin-content-item-edit').on('click', function () {
                     if ($('.admin-content-item-input').attr('disabled')) {
@@ -116,7 +132,15 @@ $(function () {
                             },
                             data: JSON.stringify(addressData),
                             success: function (res) {
-                                console.log(res)
+                                if(res.code == 0) {
+
+                                } else {
+                                    $('.admin-toast').text('网络中断，请重试');
+                                    $('.admin-toast').show();
+                                    setTimeout(function(){
+                                        $('.admin-toast').hide();
+                                    }, 1500)
+                                }
                             }
                         })
                     }
@@ -139,6 +163,12 @@ $(function () {
                             if(res.code == 0) {
                                 $('.admin-detail-status-pause').hide()
                                 $('.admin-detail-status-play').show()
+                            } else {
+                                $('.admin-toast').text('网络中断，请重试');
+                                $('.admin-toast').show();
+                                setTimeout(function(){
+                                    $('.admin-toast').hide();
+                                }, 1500)
                             }
                         }
                     })
@@ -159,6 +189,92 @@ $(function () {
                             if(res.code == 0) {
                                 $('.admin-detail-status-pause').show()
                                 $('.admin-detail-status-play').hide()
+                            } else {
+                                $('.admin-toast').text('网络中断，请重试');
+                                $('.admin-toast').show();
+                                setTimeout(function(){
+                                    $('.admin-toast').hide();
+                                }, 1500)
+                            }
+                        }
+                    })
+                })
+
+                $('.admin-detail-content-open').on('click', function (e) {
+                    var lid = e.target.dataset.lid;
+                    var currentStatus = e.target.dataset.currentstatus;
+                    var index = e.target.dataset.index;
+                    if(currentStatus == -2) {
+                        $('.admin-toast').text('低电量设备无法改变状态');
+                        $('.admin-toast').show();
+                        setTimeout(function(){
+                            $('.admin-toast').hide();
+                        }, 1500)
+                        return 
+                    }
+                    if(currentStatus == 1) {
+                        return
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: 'http://47.52.236.134:3389/v1/locks/'+ lid +'/op?aid=' + aid, 
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        success: (res) => {
+                            if(res.code == 0) {
+                                $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
+                                $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
+                            }
+                        }
+                    })
+                    
+                })
+                $('.admin-detail-content-close').on('click', function(e) {
+                    var lid = e.target.dataset.lid;
+                    var currentStatus = e.target.dataset.currentstatus;
+                    var index = e.target.dataset.index;
+                    if(currentStatus == -2) {
+                        $('.admin-toast').text('低电量设备无法改变状态');
+                        $('.admin-toast').show();
+                        setTimeout(function(){
+                            $('.admin-toast').hide();
+                        }, 1500)
+                        return 
+                    }
+                
+                    var data = {}
+                    if(currentStatus == 1) {
+                        data = {
+                            currentStatus: -1
+                        }
+                    } else if (currentStatus == -1) {
+                        data = {
+                            currentStatus: 0
+                        }
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: 'http://47.52.236.134:3389/v1/locks/' + lid + '?aid=' + aid,
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        data: JSON.stringify(data),
+                        success: (res) => {
+                            if(res.code == 0) {
+                                if(currentStatus == 1 || currentStatus == 0) {
+                                   $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('使用')
+                                   $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '-1')
+                                   $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('禁用')
+                                   $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
+                                   $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
+                                } else if (currentStatus == -1) {
+                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
+                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '1')
+                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('待使用')
+                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
+                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
+                                }
                             }
                         }
                     })

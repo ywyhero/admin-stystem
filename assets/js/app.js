@@ -72,12 +72,13 @@ $(function () {
                     } else if(gwLists[i].currentStatus == -1) {
                         status = '禁用'
                     }
+                    var imgSrc = gwLists[i].qrcode ? gwLists[i].qrcode : 'assets/img/user01.png'
                     //网关列表
                     var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-gateway-list">'
                                 + '<div class="am-cf">'
                                 +   '<ul class="am-list am-list-static am-list-border">'
                                 +       '<li class="admin-content-item-list" data-id=' + gwLists[i].gid + '>'
-                                +           '<img class="admin-content-item-img" src="'+ gwLists[i].qrcode +'" />'
+                                +           '<img class="admin-content-item-img" src="'+ imgSrc +'" />'
                                 +            '<div class="admin-content-item-name">'
                                 +                '<span>网关'+ gwLists[i].gid +'</span>'
                                 +               ' <span>别名：'+ gwLists[i].alias +'</span>'

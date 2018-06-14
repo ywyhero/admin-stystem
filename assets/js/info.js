@@ -54,12 +54,16 @@ $(function () {
 
                     } else {
                         var newPwd = $('.admin-info-item-password').val().trim();
+                        if(res.admin.info.passwd == newPwd) {
+                            return
+                        }
                         if(newPwd === ''){
                             $('.admin-toast').show();
                             $('.admin-toast').text('密码不能为空');
                             setTimeout(function () {
                                 $('.admin-toast').hide();
                             }, 1500)
+                            return 
                         }
                         var changeData = {
                             "oldPasswd": res.admin.info.passwd,

@@ -2,7 +2,7 @@ $(function () {
     var loginInfo = JSON.parse(window.sessionStorage.getItem('loginInfo'));//获取左侧菜单用户信息
     var token = window.sessionStorage.getItem('token'); //获取token
     $('.admin-info-usename').text(loginInfo.name);
-    $('.admin-info-avatar').attr('src', loginInfo.avatarUrl);
+    $('.admin-user-avatar-head').attr('src', loginInfo.avatarUrl);
     var id = window.location.href.split('?aid=')[1];
     var menu = JSON.parse(window.sessionStorage.getItem('adminMenu'));
     //多级菜单

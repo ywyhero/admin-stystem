@@ -2150,3 +2150,36 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-detail-item{
   height: 141px;
 }
+.admin-user-header{
+  position: relative;
+}
+.admin-user-avatar-head{
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+.admin-detail-gw-other-name-input{
+  outline: none;
+  border: 0;
+  background: #ff9900;
+  width: 76%;
+}
+.admin-detail-gw-other-name-input.active{
+  border: 1px solid #000;
+}
+.admin-detail-item.red{
+  background: #ed3f14;
+}
+.admin-detail-item.green{
+  background: #19be6b;
+}
+.admin-detail-item.blue{
+  background: #2d8cf0;
+}
+.admin-detail-item.yello{
+  background: #ff9900;
+}

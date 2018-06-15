@@ -7,13 +7,14 @@
     <title>控制面板</title>
     <meta name="description" content="控制面板">
     <meta name="keywords" content="index">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <meta name="apple-mobile-web-app-title" content="控制面板" />
     <script src="assets/js/echarts.min.js"></script>
     <link rel="stylesheet" href="assets/css/amazeui.min.css" />
-    <link rel="stylesheet" href="assets/css/amazeui.tree.min.css"/>
+    <link rel="stylesheet" href="assets/css/amazeui.tree.min.css" />
     <link rel="stylesheet" href="assets/css/app.css">
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/common.js"></script>
@@ -37,7 +38,6 @@
                     </span>
                 </div>
             </div>
-
         </header>
         <!-- 侧边导航栏 -->
         <div class="left-sidebar">
@@ -70,22 +70,24 @@
                     </a> -->
                     <ul class="am-tree" id="myTreeSelectableFolder">
                         <li class="am-tree-branch am-hide" data-template="treebranch">
-                          <div class="am-tree-branch-header">
-                            <button class="am-tree-branch-name">
-                              <span class="am-tree-icon am-tree-icon-folder"></span>
-                              <span class="am-tree-label"></span>
-                            </button>
-                          </div>
-                          <ul class="am-tree-branch-children"></ul>
-                          <div class="am-tree-loader"><span class="am-icon-spin am-icon-spinner"></span></div>
+                            <div class="am-tree-branch-header">
+                                <button class="am-tree-branch-name">
+                                    <span class="am-tree-icon am-tree-icon-folder"></span>
+                                    <span class="am-tree-label"></span>
+                                </button>
+                            </div>
+                            <ul class="am-tree-branch-children"></ul>
+                            <div class="am-tree-loader">
+                                <span class="am-icon-spin am-icon-spinner"></span>
+                            </div>
                         </li>
                         <li class="am-tree-item am-hide" data-template="treeitem">
-                          <button class="am-tree-item-name">
-                            <span class="am-tree-icon am-tree-icon-item"></span>
-                            <span class="am-tree-label"></span>
-                          </button>
+                            <button class="am-tree-item-name">
+                                <span class="am-tree-icon am-tree-icon-item"></span>
+                                <span class="am-tree-label"></span>
+                            </button>
                         </li>
-                      </ul>
+                    </ul>
                 </li>
 
             </ul>
@@ -94,7 +96,7 @@
 
         <!-- 内容区域 -->
         <div class="tpl-content-wrapper">
-            <div class="container-fluid am-cf">
+            <div class="container-fluid am-cf admin-user-header">
                 <div class="row">
                     <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
                         <div class="page-header-heading">
@@ -102,6 +104,7 @@
                             <small>控制面板</small>
                         </div>
                     </div>
+                    <img class="admin-user-avatar-head" src="assets/img/user04.png" alt="">
                 </div>
             </div>
             <div class="row-content am-cf">
@@ -109,7 +112,7 @@
                     <div class="am-u-sm-12 am-u-md-6 am-u-lg-3">
                         <div class="widget widget-blue am-cf">
                             <div class="widget-statistic-header">
-                                网管总数
+                                网关总数
                             </div>
                             <div class="widget-statistic-body">
                                 <div class="widget-statistic-value admin-gateways-total">
@@ -146,18 +149,18 @@
                         </div>
                     </div>
                     <div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-main-electric-low">
-                            <div class="widget widget-red am-cf">
-                                <div class="widget-statistic-header">
-                                    电量低
+                        <div class="widget widget-red am-cf">
+                            <div class="widget-statistic-header">
+                                电量低
+                            </div>
+                            <div class="widget-statistic-body">
+                                <div class="widget-statistic-value admin-electric-low">
+                                    10
                                 </div>
-                                <div class="widget-statistic-body">
-                                    <div class="widget-statistic-value admin-electric-low">
-                                        10
-                                    </div>
-                                    <span class="widget-statistic-icon am-icon-battery-quarter"></span>
-                                </div>
+                                <span class="widget-statistic-icon am-icon-battery-quarter"></span>
                             </div>
                         </div>
+                    </div>
                 </div>
                 <div class="row am-cf">
                     <div class="am-u-sm-12 am-u-md-4">
@@ -194,7 +197,7 @@
     <script src="./assets/js/amazeui.min.js"></script>
     <script src="./assets/js/amazeui.tree.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=FA36fe6c1b9bbc56a1787a09d27489ea"></script>
-   
+
     <script src="assets/js/app.js"></script>
 
 </body>

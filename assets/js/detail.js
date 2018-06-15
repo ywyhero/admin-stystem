@@ -46,7 +46,7 @@ $(function () {
                     $('.admin-detail-head').text('网关#' + gid);
                     $('.admin-content-item-img').attr('src', res.gateway.qrcode);
                     $('.admin-detail-gw-name').text('网关#' + gid);
-                    $('.admin-detail-gw-other-name').text('别名：' + res.gateway.alias);
+                    $('.admin-detail-gw-other-name-input').val(res.gateway.alias);
                     $('.admin-detail-item-input').text('别名：' + res.gateway.alias);
                     if (res.gateway.currentStatus == 1) {
                         $('.admin-detail-status-offline').hide();
@@ -82,7 +82,7 @@ $(function () {
                             currentStatus = '电量低';
                             closeText = '使用/禁用';
                         }
-                        var nickName = lists[i].currentUser.nickName ? lists[i].currentUser.nickName : '';
+                        var nickName = lists[i].currentUser.nickName ? lists[i].currentUser.nickName : '无人';
                         var alias = lists[i].alias ? lists[i].alias : '';
                         var imgSrc = lists[i].currentUser.avatarUrl ? lists[i].currentUser.avatarUrl : 'assets/img/user03.png'
                         var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">' +
@@ -105,6 +105,29 @@ $(function () {
                             '</div>'
                         htmls.push(html)
                     }
+                    for(var j = 0; j < lists.length; j++) {
+                        if (lists[j].currentStatus == 1) {
+                            $('.admin-detail-item').eq(j).removeClass('yellow')
+                            $('.admin-detail-item').eq(j).removeClass('green')
+                            $('.admin-detail-item').eq(j).removeClass('red')
+                            $('.admin-detail-item').eq(j).addClass('blue')
+                        } else if (lists[j].currentStatus == 0) {
+                            $('.admin-detail-item').eq(j).removeClass('yellow')
+                            $('.admin-detail-item').eq(j).removeClass('blue')
+                            $('.admin-detail-item').eq(j).removeClass('red')
+                            $('.admin-detail-item').eq(j).addClass('green')
+                        } else if (lists[j].currentStatus == -1) {
+                            $('.admin-detail-item').eq(j).removeClass('yellow')
+                            $('.admin-detail-item').eq(j).removeClass('blue')
+                            $('.admin-detail-item').eq(j).removeClass('green')
+                            $('.admin-detail-item').eq(j).addClass('yellow')
+                        } else if (lists[j].currentStatus == -2) {
+                            $('.admin-detail-item').eq(j).removeClass('yellow')
+                            $('.admin-detail-item').eq(j).removeClass('blue')
+                            $('.admin-detail-item').eq(j).removeClass('green')
+                            $('.admin-detail-item').eq(j).addClass('red')
+                        }
+                    }
                     $('.admin-detail-lists').append(htmls)
                     for (var j = 0; j < lists.length; j++) {
                         if (lists[j].currentStatus == -2) {
@@ -114,6 +137,39 @@ $(function () {
                             $('.admin-detail-item').eq(j).find('.admin-detail-content-open').addClass('active')
                         }
                     }
+                    $('.admin-detail-item-edit').on('click',function(){
+                        if ($('.admin-detail-gw-other-name-input').attr('disabled')) {
+                            $('.admin-detail-gw-other-name-input').attr('disabled', false)
+                            $('.admin-detail-gw-other-name-input').addClass('active');
+                        } else {
+                            $('.admin-detail-gw-other-name-input').attr('disabled', true)
+                            $('.admin-detail-gw-other-name-input').removeClass('active');
+                            var addressData = {
+                                "address": $('.admin-detail-item-input').val(),
+                                "currentStatus": res.gateway.currentStatus,
+                                "alias": $('.admin-detail-gw-other-name-input').val()
+                            }
+                            $.ajax({
+                                type: 'POST',
+                                url: 'http://47.52.236.134:3389/v1/gateways/' + gid + '?aid=' + aid,
+                                headers: {
+                                    'Authorization': 'Bearer ' + token
+                                },
+                                data: JSON.stringify(addressData),
+                                success: function (res) {
+                                    if (res.code == 0) {
+
+                                    } else {
+                                        $('.admin-toast').text('网络中断，请重试');
+                                        $('.admin-toast').show();
+                                        setTimeout(function () {
+                                            $('.admin-toast').hide();
+                                        }, 1500)
+                                    }
+                                }
+                            })
+                        }
+                    })
                     //修改地址
                     $('.admin-content-item-edit').on('click', function () {
                         if ($('.admin-content-item-input').attr('disabled')) {
@@ -124,7 +180,8 @@ $(function () {
                             $('.admin-content-item-input').removeClass('active');
                             var addressData = {
                                 "address": $('.admin-detail-item-input').val(),
-                                "currentStatus": res.gateway.currentStatus
+                                "currentStatus": res.gateway.currentStatus,
+                                "alias": $('.admin-detail-gw-other-name-input').val()
                             }
                             $.ajax({
                                 type: 'POST',
@@ -151,7 +208,8 @@ $(function () {
                     $('.admin-detail-status-pause').on('click', function () {
                         var addressData = {
                             "address": $('.admin-detail-item-input').val(),
-                            "currentStatus": "0"
+                            "currentStatus": "0",
+                            "alias": $('.admin-detail-gw-other-name-input').val()
                         }
                         $.ajax({
                             type: 'POST',
@@ -178,7 +236,8 @@ $(function () {
                     $('.admin-detail-status-play').on('click', function () {
                         var addressData = {
                             "address": $('.admin-detail-item-input').val(),
-                            "currentStatus": "1"
+                            "currentStatus": "1",
+                            "alias": $('.admin-detail-gw-other-name-input').val()
                         }
                         $.ajax({
                             type: 'POST',
@@ -236,9 +295,9 @@ $(function () {
                     $('.admin-detail-lists').find('.admin-detail-content-close').add('#doc-confirm-toggle').
                         on('click', function (e) {
                             var lid = e.target.dataset.lid;
-                            var currentStatus = e.target.dataset.currentstatus;
+                            var currentStatusDetail = e.target.dataset.currentstatus;
                             var index = e.target.dataset.index;
-                            if (currentStatus == -2) {
+                            if (currentStatusDetail == -2) {
                                 $('.admin-toast').text('低电量设备无法改变状态');
                                 $('.admin-toast').show();
                                 setTimeout(function () {
@@ -247,14 +306,15 @@ $(function () {
                                 return
                             }
                             var data = {}
-                            if (currentStatus == 1) {
+                            console.log(currentStatusDetail)
+                            if (currentStatusDetail == 1) {
                                 data = {
-                                    currentStatus: -1
+                                    currentStatus: "-1"
                                 }
                                 $('.am-modal-bd').text('确定要禁用该设备吗？')
-                            } else if (currentStatus == -1) {
+                            } else if (currentStatusDetail == -1) {
                                 data = {
-                                    currentStatus: 0
+                                    currentStatus: "0"
                                 }
                                 $('.am-modal-bd').text('确定要使用该设备吗？')
                             }
@@ -270,17 +330,18 @@ $(function () {
                                         data: JSON.stringify(data),
                                         success: (res) => {
                                             if (res.code == 0) {
-                                                if (currentStatus == 1 || currentStatus == 0) {
+                                                console.log(currentStatusDetail)
+                                                if (currentStatusDetail == 1 || currentStatusDetail == 0) { // 使用中  待使用
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('使用')
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '-1')
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('禁用')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
+                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
-                                                } else if (currentStatus == -1) {
+                                                } else if (currentStatusDetail == -1) {
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '1')
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('待使用')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
+                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '1')
                                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
                                                 }
                                             }

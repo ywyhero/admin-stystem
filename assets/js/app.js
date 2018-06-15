@@ -15,7 +15,7 @@ $(function () {
         success: function(res) {
             if(res.code == 0) {
                 $('.admin-username').text(res.admin.info.nickName);
-                $('.admin-user-avatar').attr('src',res.admin.info.avatarUrl);
+                $('.admin-user-avatar-head').attr('src',res.admin.info.avatarUrl);
                 var loginInfo = {
                     name: res.admin.info.nickName,
                     avatarUrl: res.admin.info.avatarUrl
@@ -28,7 +28,12 @@ $(function () {
                     availableLocks = 0,
                     totalLocks = 0,
                     batteryLowLocks = 0,
-                    menu = [],
+                    bannedLocks = 0,
+                    menu = [{
+                        title: '设备列表',
+                        type: 'folder',
+                        products: []
+                    }],
                     mapArr = [],
                     htmls = [],
                     usePeople = 0;
@@ -37,27 +42,25 @@ $(function () {
                 for(var i = 0, len = gwLists.length; i < len; i++) {
                    
                     var menuObj = {
-                        title: '网关#' + gwLists[i].gid,
-                        type: 'folder',
-                        products: [
-                            {
-                                title: gwLists[i].alias,
+                                title: '网关#' + gwLists[i].gid,
                                 type: 'item',
                                 id: gwLists[i].gid,
                             }
-                        ]
-                    }
+                        
+                
                     var mapObj = {
-                        point: gwLists[i].address.location.longitude + ',' + gwLists[i].address.location.latitude  
+                        point: gwLists[i].address.location.longitude + ',' + gwLists[i].address.location.latitude ,
+                        title: gwLists[i].address.formatted_address
                     }
                     //地图数据
                     mapArr.push(mapObj)
                     //多级菜单
-                    menu.push(menuObj)
+                    menu[0].products.push(menuObj)
                    
                     availableLocks += Number(gwLists[i].availableLocks); //该网关下管理的锁当前空闲可用总数
                     totalLocks += Number(gwLists[i].totalLocks); //该网关下管理的锁设备总数
                     batteryLowLocks += Number(gwLists[i].batteryLowLocks) //电量低
+                    bannedLocks += Number(gwLists[i].bannedLocks) //禁用设备
                     usePeople += (gwLists[i].totalLocks - gwLists[i].bannedLocks - gwLists[i].availableLocks - gwLists[i].batteryLowLocks) //使用人数
                     //网关状态
                     var status = null;
@@ -100,25 +103,25 @@ $(function () {
                            +'</div>';
                            htmls.push(html)
                 }
-                menu = menu.reverse()
+                menu[0].products.reverse()
                 $('.admin-gateways-lists').append(htmls.reverse())
-                usePercent = Math.round((totalLocks - availableLocks) / totalLocks) + '%'
+                usePercent = Math.round(usePeople / totalLocks) + '%'
                 $('.admin-use-percent').text(usePercent);
                 $('.admin-electric-low').text(batteryLowLocks);
                 $('.admin-use-people').text(usePeople)
                  //饼图数据
                 tempData = [{
-                        value: gwLists.length,
-                        name: '网关总数'
+                        value:  Number(Math.round(usePeople / totalLocks / 100)) ,
+                        name: '正在使用的设备'
                     }, {
-                        value: Number(Math.round((totalLocks - availableLocks) / totalLocks / 100)) ,
-                        name: '利用率'
+                        value: Number(Math.round(availableLocks / totalLocks / 100)) ,
+                        name: '空闲设备'
                     }, {
-                        value: Number(usePeople),
-                        name: '使用人数'
+                        value: Number(Math.round(bannedLocks / totalLocks / 100)),
+                        name: '禁用的设备'
                     }, {
-                        value: Number(batteryLowLocks),
-                        name: '电量低'
+                        value: Number(Math.round(batteryLowLocks / totalLocks / 100)),
+                        name: '低电量设备'
                     }]
                 chartData(tempData); //echarts饼图
                 map_init(mapArr);//地图初始化
@@ -217,7 +220,7 @@ function chartData(data) {
 }
 
 //map
-function map_init(markerArr){
+function map_init(markerArr){  
     var map = new BMap.Map("allmap"); // 创建Map实例  
     map.centerAndZoom(new BMap.Point(121.45634, 31.231765), 12); // 初始化地图,设置中心点坐标和地图级别。  
     map.enableScrollWheelZoom(true); //启用滚轮放大缩小  
@@ -246,9 +249,9 @@ function map_init(markerArr){
        
         map.addOverlay(marker[i]);  
         marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画  
-        // let label = new window.BMap.Label(markerArr[i].title, { offset: new window.BMap.Size(20, -10) });  
-        // marker[i].setLabel(label);  
-        // info[i] = new window.BMap.InfoWindow("<p style=’font-size:12px;lineheight:1.8em;’>" + markerArr[i].title + "</br>地址：" + markerArr[i].address + "</br> 电话：" + markerArr[i].tel + "</br></p>"); // 创建信息窗口对象  
+        let label = new window.BMap.Label(markerArr[i].title, { offset: new window.BMap.Size(20, -10) });  
+        marker[i].setLabel(label);  
+        info[i] = new window.BMap.InfoWindow("<p style=’font-size:12px;lineheight:1.8em;’>" + markerArr[i].title + "</p>"); // 创建信息窗口对象    
     }  
 }
 

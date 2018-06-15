@@ -106,13 +106,12 @@ $(function () {
                         htmls.push(html)
                     }
                     $('.admin-detail-lists').append(htmls)
-
-                    for (var i = 0; i < lists.length; i++) {
-                        if (lists[i].currentStatus == -2) {
-                            $('.admin-detail-item').eq(i).find('.admin-detail-content-open').addClass('active')
-                            $('.admin-detail-item').eq(i).find('.admin-detail-content-close').addClass('active')
-                        } else if (lists[i].currentStatus == 1) {
-                            $('.admin-detail-item').eq(i).find('.admin-detail-content-open').addClass('active')
+                    for (var j = 0; j < lists.length; j++) {
+                        if (lists[j].currentStatus == -2) {
+                            $('.admin-detail-item').eq(j).find('.admin-detail-content-open').addClass('active')
+                            $('.admin-detail-item').eq(j).find('.admin-detail-content-close').addClass('active')
+                        } else if (lists[j].currentStatus == 1 || lists[j].currentStatus == -1) {
+                            $('.admin-detail-item').eq(j).find('.admin-detail-content-open').addClass('active')
                         }
                     }
                     //修改地址
@@ -215,7 +214,7 @@ $(function () {
                             }, 1500)
                             return
                         }
-                        if (currentStatus == 1) {
+                        if (currentStatus == 1 || currentStatus == -1) {
                             return
                         }
                         $.ajax({
@@ -228,6 +227,7 @@ $(function () {
                                 if (res.code == 0) {
                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
+                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
                                 }
                             }
                         })

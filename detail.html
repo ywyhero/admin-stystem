@@ -55,7 +55,7 @@
                     <span class="sidebar-nav-heading-info"> MAIN NAVIGATION</span>
                 </li>
                 <li class="sidebar-nav-link">
-                    <a href="index.html" class="active">
+                    <a href="main.html" class="active">
                         <i class="am-icon-home sidebar-nav-link-logo"></i> 控制面板
                     </a>
                 </li>
@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="row-content am-cf">
-                <div class="row am-cf">
+                <div class="row am-cf admin-detail-gateway">
                     <div class="am-u-sm-12 am-u-md-6 am-u-lg-4">
                         <div class="am-cf">
                             <ul class="am-list am-list-static am-list-border">
@@ -111,7 +111,10 @@
                                     <img class="admin-content-item-img" src="./assets/img/user03.png" />
                                     <div class="admin-content-item-name">
                                         <span class="admin-detail-gw-name">网关</span>
-                                        <span class="admin-detail-gw-other-name">别名：1楼左上角</span>
+                                        <span class="admin-detail-gw-other-name">别名：1楼左上角
+                                            <!-- <input type="text" value="1楼左上角" disabled="false" />
+                                            <span class="am-icon-edit admin-content-item-icon admin-content-item-edit"></span> -->
+                                        </span>
                                     </div>
                                 </li>
                                 <li class="admin-content-item">
@@ -123,7 +126,7 @@
                                     <span class="am-icon-pause admin-content-item-icon admin-detail-status-pause"></span>
                                     <span class="am-icon-play admin-content-item-icon admin-detail-status-play"></span>
                                     <span class="am-icon-play admin-content-item-icon admin-detail-status-offline">禁用</span>
-                                    
+
                                 </li>
                                 <li class="admin-content-item">
                                     <span>可使用设备</span>
@@ -143,6 +146,18 @@
         </div>
     </div>
     <div class="admin-toast">不能为空</div>
+    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+        <div class="am-modal-dialog">
+            <div class="am-modal-hd">提示</div>
+            <div class="am-modal-bd">
+                确定要禁用该设备吗？
+            </div>
+            <div class="am-modal-footer">
+                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            </div>
+        </div>
+    </div>
     <script src="./assets/js/amazeui.min.js"></script>
     <script src="./assets/js/amazeui.tree.min.js"></script>
     <script src="assets/js/common.js"></script>

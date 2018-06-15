@@ -35,10 +35,7 @@ $(function () {
                 
                 $('.admin-gateways-total').text(gateWaysTotal)
                 for(var i = 0, len = gwLists.length; i < len; i++) {
-                    var obj = {
-                        value: gwLists[i].totalLocks,
-                        name: gwLists[i].alias
-                    }
+                   
                     var menuObj = {
                         title: '网关#' + gwLists[i].gid,
                         type: 'folder',
@@ -51,14 +48,13 @@ $(function () {
                         ]
                     }
                     var mapObj = {
-                        point: gwLists[i].address.location.latitude + ',' + gwLists[i].address.location.longitude  
+                        point: gwLists[i].address.location.longitude + ',' + gwLists[i].address.location.latitude  
                     }
                     //地图数据
                     mapArr.push(mapObj)
                     //多级菜单
                     menu.push(menuObj)
-                    //饼图数据
-                    tempData.push(obj)
+                   
                     availableLocks += Number(gwLists[i].availableLocks); //该网关下管理的锁当前空闲可用总数
                     totalLocks += Number(gwLists[i].totalLocks); //该网关下管理的锁设备总数
                     batteryLowLocks += Number(gwLists[i].batteryLowLocks) //电量低
@@ -78,10 +74,10 @@ $(function () {
                                 + '<div class="am-cf">'
                                 +   '<ul class="am-list am-list-static am-list-border">'
                                 +       '<li class="admin-content-item-list" data-id=' + gwLists[i].gid + '>'
-                                +           '<img class="admin-content-item-img" src="'+ imgSrc +'" />'
-                                +            '<div class="admin-content-item-name">'
-                                +                '<span>网关'+ gwLists[i].gid +'</span>'
-                                +               ' <span>别名：'+ gwLists[i].alias +'</span>'
+                                +           '<img class="admin-content-item-img" data-id=' + gwLists[i].gid + ' src="'+ imgSrc +'" />'
+                                +            '<div class="admin-content-item-name" data-id=' + gwLists[i].gid + '>'
+                                +                '<span data-id=' + gwLists[i].gid + '>网关'+ gwLists[i].gid +'</span>'
+                                +               ' <span data-id=' + gwLists[i].gid + '>别名：'+ gwLists[i].alias +'</span>'
                                 +           ' </div>'
                                 +        '</li>'
                                 +        '<li class="admin-content-item">'
@@ -110,6 +106,20 @@ $(function () {
                 $('.admin-use-percent').text(usePercent);
                 $('.admin-electric-low').text(batteryLowLocks);
                 $('.admin-use-people').text(usePeople)
+                 //饼图数据
+                tempData = [{
+                        value: gwLists.length,
+                        name: '网关总数'
+                    }, {
+                        value: Number(Math.round((totalLocks - availableLocks) / totalLocks / 100)) ,
+                        name: '利用率'
+                    }, {
+                        value: Number(usePeople),
+                        name: '使用人数'
+                    }, {
+                        value: Number(batteryLowLocks),
+                        name: '电量低'
+                    }]
                 chartData(tempData); //echarts饼图
                 map_init(mapArr);//地图初始化
                 window.sessionStorage.setItem('adminMenu', JSON.stringify(menu))
@@ -138,6 +148,10 @@ $(function () {
                     window.location.href = '/detail.html?aid=' + id  + '&gw=' + gid
 
                 })  
+
+                // $('.admin-main-electric-low').on('click', function() {
+                //     window.location.href = '/detail.html?from=header'
+                // })
             } else if(res.code == -1) {
                 window.location.href = '/index.html'
             }
@@ -147,7 +161,7 @@ $(function () {
             window.location.href = '/index.html'
         }
     })
-   
+  
     
 })
 
@@ -163,8 +177,7 @@ function chartData(data) {
 
     optionC = {
         tooltip: {
-            trigger: 'item',
-            formatter: "{a} <br/>{b}: {c} ({d}%)"
+            trigger: 'item'
         },
         series: [
             {
@@ -206,7 +219,7 @@ function chartData(data) {
 //map
 function map_init(markerArr){
     var map = new BMap.Map("allmap"); // 创建Map实例  
-    map.centerAndZoom(new BMap.Point(0, 0), 1); // 初始化地图,设置中心点坐标和地图级别。  
+    map.centerAndZoom(new BMap.Point(121.45634, 31.231765), 12); // 初始化地图,设置中心点坐标和地图级别。  
     map.enableScrollWheelZoom(true); //启用滚轮放大缩小  
     //向地图中添加缩放控件  
     var ctrlNav = new window.BMap.NavigationControl({  
@@ -226,10 +239,11 @@ function map_init(markerArr){
     var marker = new Array(); //存放标注点对象的数组  
     var info = new Array(); //存放提示信息窗口对象的数组  
     for (var i = 0; i < markerArr.length; i++) {  
-        var p0 = markerArr[i].point.split(",")[0]; //  
-        var p1 = markerArr[i].point.split(",")[1]; //按照原数组的point格式将地图点坐标的经纬度分别提出来  
+        var p0 = Number(markerArr[i].point.split(",")[0]); //  
+        var p1 = Number(markerArr[i].point.split(",")[1]); //按照原数组的point格式将地图点坐标的经纬度分别提出来  
         point[i] = new window.BMap.Point(p0, p1); //循环生成新的地图点  
         marker[i] = new window.BMap.Marker(point[i]); //按照地图点坐标生成标记  
+       
         map.addOverlay(marker[i]);  
         marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画  
         // let label = new window.BMap.Label(markerArr[i].title, { offset: new window.BMap.Size(20, -10) });  

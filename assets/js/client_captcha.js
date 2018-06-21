@@ -12,7 +12,7 @@
             height: 163,
             colour1: null,
             colour2: null,
-            font: 'normal 40px "Comic Sans MS", cursive, sans-serif',
+            font: 'normal 40px "", cursive, sans-serif',
             onSuccess: function() {
                 alert('Correct!');
             },
@@ -47,6 +47,7 @@
             this._buttonRefresh = this._container.find('.refresh')
                 .on('click.captcha', function() {
                     that.generate();
+                    $('.login-code').val('');
                 });
 
             this._context = this._canvas.get(0).getContext("2d");
@@ -109,7 +110,7 @@
             },
 
             validate: function(userText) {
-                if (userText === this._settings.text) {
+                if (userText.toLowerCase() === this._settings.text.toLowerCase()) {
                     this._settings.onSuccess();
                 } else {
                     this._settings.onFailure();

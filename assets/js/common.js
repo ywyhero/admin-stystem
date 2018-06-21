@@ -4,6 +4,13 @@ $(function () {
     $(window).resize(function () {
         autoLeftNav();
     });
+    $('.admin-login-out').on('click', function() {
+        window.sessionStorage.removeItem('token');
+        window.sessionStorage.removeItem('aid');
+        window.sessionStorage.removeItem('loginInfo');
+        window.sessionStorage.removeItem('adminMenu');
+        window.location.href = '/index.html'
+    })
 })
 
 

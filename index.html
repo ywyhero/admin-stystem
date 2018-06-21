@@ -13,8 +13,54 @@
     <meta name="apple-mobile-web-app-title" content="404" />
     <link rel="stylesheet" href="assets/css/amazeui.min.css" />
     <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/htmleaf-demo.css">
     <script src="assets/js/jquery.min.js"></script>
+    <style type="text/css">
+		.captcha-chat {
+			width: 300px;
+			margin: 20px auto;
+		}
 
+		p.wrong {
+			display: none;
+		}
+
+		p.wrong.shake {
+			display: block;
+		}
+
+		p.wrong.shake {
+			animation: shake .4s cubic-bezier(.36, .07, .19, .97) both;
+			transform: translate3d(0, 0, 0);
+			backface-visibility: hidden;
+			perspective: 1000px;
+		}
+
+		@keyframes shake {
+			10%,
+			90% {
+				transform: translate3d(-1px, 0, 0);
+			}
+			20%,
+			80% {
+				transform: translate3d(1px, 0, 0);
+			}
+			30%,
+			50%,
+			70% {
+				transform: translate3d(-2px, 0, 0);
+			}
+			40%,
+			60% {
+				transform: translate3d(2px, 0, 0);
+			}
+		}
+
+		.controls img {
+			height: 20px;
+		}
+	</style>
 </head>
 
 <body data-type="login">
@@ -22,7 +68,7 @@
     <div class="am-g tpl-g">
         <div class="tpl-login">
             <div class="tpl-login-content">
-                <form class="am-form tpl-form-line-form">
+                <div class="am-form tpl-form-line-form">
                     <div class="am-form-group">
                         <input type="text" class="tpl-form-input" id="user-name" placeholder="请输入账号">
 
@@ -32,19 +78,42 @@
                         <input type="password" class="tpl-form-input" id="user-password" placeholder="请输入密码">
 
                     </div>
-                    <div class="am-form-group">
+                    <div class="htmleaf-container">
+                            <div class="captcha-chat">
+                                <div class="captcha-container media">
+                                    <div class="media-body">
+                                        <p class="security">请输入验证码：</p>
+                                    </div>
+                                    <div id="captcha">
+                                        <div class="controls" style="display: flex;">
+                                            <input style="background: #fff; padding: 5px; color:#000; width: 80%;margin-right: 20px;" class="user-text btn-common login-code" placeholder="输入验证码" type="text" />
+                                           
+                                            <button class="refresh btn-common" style="background: #fff;">
+                                                <!-- this image should be converted into inline svg -->
+                                                <img src="assets/img/refresh_icon.png" alt="refresh icon">
+                                            </button>
+                                        </div>
 
-                        <button id="login-btn" type="button" class="am-btn am-btn-primary  am-btn-block tpl-btn-bg-color-success  tpl-login-btn">提交</button>
-
-                    </div>
-                </form>
+                                        <div class="am-form-group" style="margin-top: 20px;">
+                                            <button id="login-btn" type="button" class="am-btn am-btn-primary validate btn-common am-btn-block tpl-btn-bg-color-success  tpl-login-btn">提交</button>
+                                        </div>
+                                    </div>
+                                    <p class="wrong info">验证码输入错误，请重试！</p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                </div>
             </div>
         </div>
     </div>
     <div class="admin-toast">不能为空</div>
     <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/client_captcha.js" defer></script>
     <script src="assets/js/login.js"></script>
-   
+    <script>
+           
+        </script>
 </body>
 
 </html>

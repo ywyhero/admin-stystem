@@ -3,8 +3,16 @@ $(function () {
     var token = window.sessionStorage.getItem('token'); //获取token
     $('.admin-info-usename').text(loginInfo.name);
     $('.admin-user-avatar-head').attr('src', loginInfo.avatarUrl);
+    $('.admin-info-avatar').attr('src', loginInfo.avatarUrl);
     var id = window.location.href.split('?aid=')[1];
     var menu = JSON.parse(window.sessionStorage.getItem('adminMenu'));
+    $('.admin-user-avatar-head').on('click', function (e) {
+        e.stopPropagation();
+        window.location.href = '/info.html?aid=' + aid;
+    })
+    $('.admin-info-avatar').on('click', function () {
+        window.location.href = '/info.html?aid=' + aid;
+    })
     //多级菜单
     $('#admin-info-tree').tree({
         dataSource: function (options, callback) {

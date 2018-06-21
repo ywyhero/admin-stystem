@@ -2008,6 +2008,13 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   border: 0;
   cursor: pointer;
 }
+.am-cf .am-list-static .admin-content-item.admin-content-address{
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .admin-content-item-name{
   display: flex;
   flex-direction: column;
@@ -2060,7 +2067,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-detail-content-close{
   cursor: pointer;
   margin-right: 10px;
-  background: #19be6b;
+  background: #4169E1;
   padding: 5px;
   border-radius: 4px;
   color: #fff;
@@ -2158,9 +2165,18 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   height: 40px;
   border-radius: 40px;
   position: absolute;
-  right: 20px;
-  top: 20px;
+  right: 65px;
+  top: 10px;
   cursor: pointer;
+  z-index: 9999;
+}
+.admin-login-out{
+  position: absolute;
+  right: 20px;
+  top: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 9999;
 }
 .admin-detail-gw-other-name-input{
   outline: none;
@@ -2171,15 +2187,18 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-detail-gw-other-name-input.active{
   border: 1px solid #000;
 }
-.admin-detail-item.red{
+.admin-detail-list.red{
   background: #ed3f14;
 }
-.admin-detail-item.green{
+.admin-detail-list.green{
   background: #19be6b;
 }
-.admin-detail-item.blue{
+.admin-detail-list.blue{
   background: #2d8cf0;
 }
-.admin-detail-item.yello{
+.admin-detail-list.yellow{
   background: #ff9900;
+}
+.admin-info-avatar{
+  cursor: pointer;
 }

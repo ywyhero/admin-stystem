@@ -5,6 +5,10 @@ $(function () {
     $('.admin-user-info').on('click', function() {
         window.location.href = '/info.html?aid=' + id;
     })
+    $('.admin-user-avatar-head').on('click', function(e) {
+        e.stopPropagation();
+        window.location.href = '/info.html?aid=' + id;
+    })
     //获取页面信息
     $.ajax({
         type: 'GET',
@@ -16,6 +20,7 @@ $(function () {
             if(res.code == 0) {
                 $('.admin-username').text(res.admin.info.nickName);
                 $('.admin-user-avatar-head').attr('src',res.admin.info.avatarUrl);
+                $('.admin-user-avatar').attr('src',res.admin.info.avatarUrl);
                 var loginInfo = {
                     name: res.admin.info.nickName,
                     avatarUrl: res.admin.info.avatarUrl
@@ -83,7 +88,7 @@ $(function () {
                                 +               ' <span data-id=' + gwLists[i].gid + '>别名：'+ gwLists[i].alias +'</span>'
                                 +           ' </div>'
                                 +        '</li>'
-                                +        '<li class="admin-content-item">'
+                                +        '<li class="admin-content-item admin-content-address" title="'+gwLists[i].address.formatted_address+'">'
                                 +            '地址：'+ gwLists[i].address.formatted_address +''
                                 +        '</li>'
                                 +        '<li class="admin-content-item">'
@@ -105,26 +110,29 @@ $(function () {
                 }
                 menu[0].products.reverse()
                 $('.admin-gateways-lists').append(htmls.reverse())
-                usePercent = Math.round(usePeople / totalLocks) + '%'
+                usePercent = Math.round(usePeople / totalLocks * 100) + '%'
                 $('.admin-use-percent').text(usePercent);
                 $('.admin-electric-low').text(batteryLowLocks);
                 $('.admin-use-people').text(usePeople)
                  //饼图数据
                 tempData = [{
-                        value:  Number(Math.round(usePeople / totalLocks / 100)) ,
+                        value:  Number(Math.round(usePeople / totalLocks * 100) ) ,
                         name: '正在使用的设备'
                     }, {
-                        value: Number(Math.round(availableLocks / totalLocks / 100)) ,
+                        value: Number(Math.round(availableLocks / totalLocks * 100)) ,
                         name: '空闲设备'
                     }, {
-                        value: Number(Math.round(bannedLocks / totalLocks / 100)),
+                        value: Number(Math.round(bannedLocks / totalLocks * 100)),
                         name: '禁用的设备'
                     }, {
-                        value: Number(Math.round(batteryLowLocks / totalLocks / 100)),
+                        value: Number(Math.round(batteryLowLocks / totalLocks * 100)),
                         name: '低电量设备'
                     }]
+                    console.log(tempData)
                 chartData(tempData); //echarts饼图
-                map_init(mapArr);//地图初始化
+                var x = mapArr[0].point.split(',')[0];
+                var y = mapArr[0].point.split(',')[1];
+                map_init(x, y, mapArr);//地图初始化
                 window.sessionStorage.setItem('adminMenu', JSON.stringify(menu))
                 //多级菜单
                 $('#myTreeSelectableFolder').tree({
@@ -151,6 +159,7 @@ $(function () {
                     window.location.href = '/detail.html?aid=' + id  + '&gw=' + gid
 
                 })  
+                
 
                 // $('.admin-main-electric-low').on('click', function() {
                 //     window.location.href = '/detail.html?from=header'
@@ -180,7 +189,8 @@ function chartData(data) {
 
     optionC = {
         tooltip: {
-            trigger: 'item'
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {d}%"
         },
         series: [
             {
@@ -205,7 +215,7 @@ function chartData(data) {
                     normal: {
                         label: {
                             show: true,
-                            formatter: '{b}\r\n{c}'
+                            formatter: '{b}\r\n{c}%'
                         },
                         abelLine: { show: true }
                     }
@@ -220,9 +230,9 @@ function chartData(data) {
 }
 
 //map
-function map_init(markerArr){  
+function map_init(x, y, markerArr){  
     var map = new BMap.Map("allmap"); // 创建Map实例  
-    map.centerAndZoom(new BMap.Point(121.45634, 31.231765), 12); // 初始化地图,设置中心点坐标和地图级别。  
+    map.centerAndZoom(new BMap.Point(x, y), 4); // 初始化地图,设置中心点坐标和地图级别。  
     map.enableScrollWheelZoom(true); //启用滚轮放大缩小  
     //向地图中添加缩放控件  
     var ctrlNav = new window.BMap.NavigationControl({  

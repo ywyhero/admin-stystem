@@ -72,7 +72,7 @@ $(function () {
                     if( gwLists[i].currentStatus == 1) {
                         status = '正常'
                     } else if(gwLists[i].currentStatus == 0) {
-                        status = '离线'
+                        status = '空闲'
                     } else if(gwLists[i].currentStatus == -1) {
                         status = '禁用'
                     }

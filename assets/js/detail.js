@@ -53,25 +53,21 @@ $(function () {
                     $('.admin-detail-gw-other-name-input').val(res.gateway.alias);
                     $('.admin-detail-item-input').text('别名：' + res.gateway.alias);
                     if (res.gateway.currentStatus == 1) {
-                        $('.admin-detail-status-offline').hide();
                         $('.admin-detail-status-pause').show();
                         $('.admin-detail-status-play').hide();
                         $('.admin-content-item-status').text('使用中')
                     } else if (res.gateway.currentStatus == 0) {
-                        $('.admin-detail-status-offline').hide();
                         $('.admin-detail-status-pause').hide();
                         $('.admin-detail-status-play').show();
                         $('.admin-content-item-status').text('空闲')
                     } else if (res.gateway.currentStatus == -1) {
-                        $('.admin-detail-status-offline').show();
-                        $('.admin-detail-status-offline').text('禁用');
                         $('.admin-detail-status-pause').hide();
-                        $('.admin-detail-status-play').hide();
+                        $('.admin-detail-status-play').show();
+                        $('.admin-content-item-status').text('禁用');
                     } else if (res.gateway.currentStatus == -2) {
-                        $('.admin-detail-status-offline').show();
-                        $('.admin-detail-status-offline').text('电量低');
+                        $('.admin-content-item-status').text('电量低');
                         $('.admin-detail-status-pause').hide();
-                        $('.admin-detail-status-play').hide();
+                        $('.admin-detail-status-play').show();
                     }
                     $('.admin-detail-item-input').val(res.gateway.address.formatted_address);
                     $('.admin-detail-use-count').text(res.gateway.lockList.available);
@@ -94,9 +90,10 @@ $(function () {
                             currentStatus = '电量低';
                             closeText = '禁用';
                         }
+                       
                         var nickName = lists[i].currentUser.nickName ? lists[i].currentUser.nickName : '无人';
                         var alias = lists[i].alias ? lists[i].alias : '';
-                        var imgSrc = lists[i].currentUser.avatarUrl ? lists[i].currentUser.avatarUrl : 'assets/img/user03.png'
+                        var imgSrc = lists[i].currentUser.avatarUrl ? lists[i].currentUser.avatarUrl : 'assets/img/timg.jpeg'
                         var html = '<div class="am-u-sm-12 am-u-md-6 am-u-lg-3 admin-detail-item">' +
                             '<div class="am-cf admin-detail-list">' +
                             '<img class="admin-detail-img" src="' + imgSrc + '" alt="">' +
@@ -116,10 +113,15 @@ $(function () {
                             '</div>' +
                             '</div>'
                         htmls.push(html)
+                        
                     }
                     $('.admin-detail-lists').append(htmls)
                     for(var j = 0; j < lists.length; j++) {
-                        
+                        if(JSON.stringify(lists[j].currentUser) ==  '[]') {
+                            $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').hide()
+                        } else {
+                            $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').show()
+                        }
                         if (lists[j].currentStatus == 1) {
                             $('.admin-detail-item').eq(j).find('.admin-detail-list').removeClass('yellow')
                             $('.admin-detail-item').eq(j).find('.admin-detail-list').removeClass('green')
@@ -275,21 +277,12 @@ $(function () {
                         })
                     })
 
-                    $('.admin-detail-content-open').on('click', function (e) {
+                    $('.admin-detail-content-open').unbind('click').on('click', function (e) {
                         var lid = e.target.dataset.lid;
                         var currentStatus = e.target.dataset.currentstatus;
                         var index = e.target.dataset.index;
-                        if (currentStatus == -2) {
-                            // $('.admin-toast').text('低电量设备无法改变状态');
-                            // $('.admin-toast').show();
-                            // setTimeout(function () {
-                            //     $('.admin-toast').hide();
-                            // }, 1500)
-                            return
-                        }
-                        if (currentStatus == 1 || currentStatus == -1) {
-                            return
-                        }
+                        
+                        if (currentStatus == -2 || currentStatus == 1) return;
                         $.ajax({
                             type: "POST",
                             url: 'http://47.52.236.134:3389/v1/locks/' + lid + '/op?aid=' + aid,
@@ -299,93 +292,105 @@ $(function () {
                             success: (res) => {
                                 if (res.code == 0) {
                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
                                     $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
                                     $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')
                                     $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
                                     $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
                                     $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('blue')
+                                    $('#dialog').hide();
                                 }
                             }
                         })
 
                     })
-                    $('.admin-detail-lists').find('.admin-detail-content-close').add('#doc-confirm-toggle').
-                        on('click', function (e) {
-                            var lid = e.target.dataset.lid;
-                            var currentStatusDetail = e.target.dataset.currentstatus;
+                    $('.admin-detail-content-close').unbind('click').on('click', function(e){
+                        var currentStatusDetail = e.target.dataset.currentstatus;
+                        if (currentStatusDetail == -2) return;
+                        $('#dialog').show();
+                        $('.dialog-sure').unbind('click').on('click', function(){
                             var index = e.target.dataset.index;
-                            if (currentStatusDetail == -2) {
-                                // $('.admin-toast').text('低电量设备无法改变状态');
-                                // $('.admin-toast').show();
-                                // setTimeout(function () {
-                                //     $('.admin-toast').hide();
-                                // }, 1500)
-                                return
-                            }
-                            $('#my-confirm').modal({
-                                relatedTarget: this,
-                                onConfirm: function () {
-                                    currentStatusDetail = e.target.dataset.currentstatus
-                                    if (currentStatusDetail == 1 || currentStatusDetail == 0) {
-                                        data = {
-                                            currentStatus: "-1"
-                                        }
-                                        $.ajax({
-                                            type: "POST",
-                                            url: 'http://47.52.236.134:3389/v1/locks/' + lid + '?aid=' + aid,
-                                            headers: {
-                                                'Authorization': 'Bearer ' + token
-                                            },
-                                            data: JSON.stringify(data),
-                                            success: (res) => {
-                                                if (res.code == 0) {
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('启用')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '-1')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('禁用')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('blue')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('yellow')
-                                                }
-                                            }
-                                        })
-                                    } else if (currentStatusDetail == -1) {
-                                        data = {
-                                            currentStatus: "1"
-                                        }
-                                        $.ajax({
-                                            type: "POST",
-                                            url: 'http://47.52.236.134:3389/v1/locks/' + lid + '?aid=' + aid,
-                                            headers: {
-                                                'Authorization': 'Bearer ' + token
-                                            },
-                                            data: JSON.stringify(data),
-                                            success: (res) => {
-                                                if (res.code == 0) {
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '1')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('空闲')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '0')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('blue')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
-                                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('green')
-                                                    
-                                                }
-                                            }
-                                        })
-                                    }
-                                },
-                                // closeOnConfirm: false,
-                                onCancel: function () {
+                            var lid = e.target.dataset.lid;
+                            console.log(index)
+                            if (currentStatusDetail == 1 || currentStatusDetail == 0) {
+                                data = {
+                                    currentStatus: "-1"
                                 }
-                            });
-                           
-                        });
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'http://47.52.236.134:3389/v1/locks/' + lid + '?aid=' + aid,
+                                    headers: {
+                                        'Authorization': 'Bearer ' + token
+                                    },
+                                    data: JSON.stringify(data),
+                                    success: (res) => {
+                                        if (res.code == 0) {
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('启用')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '-1')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('禁用')
+                                            // $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('blue')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('yellow')
+                                            $('#dialog').hide();
+                                        }
+                                    }
+                                })
+                            } else if (currentStatusDetail == -1) {
+                                data = {
+                                    currentStatus: "1"
+                                }
+                                $.ajax({
+                                    type: "POST",
+                                    url: 'http://47.52.236.134:3389/v1/locks/' + lid + '?aid=' + aid,
+                                    headers: {
+                                        'Authorization': 'Bearer ' + token
+                                    },
+                                    data: JSON.stringify(data),
+                                    success: (res) => {
+                                        if (res.code == 0) {
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '1')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('空闲')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '0')
+                                            // $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('blue')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('green')
+                                            $('#dialog').hide();
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                          
+                        $('.dialog-cancle').on('click', function() {
+                            $('#dialog').hide();
+                        })
+                    })
+                    // $('.admin-detail-lists').find('.admin-detail-content-close').add('#doc-confirm-toggle').
+                        // on('click', function (e) {
+                        //     var lid = e.target.dataset.lid;
+                        //     var currentStatusDetail = e.target.dataset.currentstatus;
+                        //     var index = e.target.dataset.index;
+                        //    console.log(index)
+                        //     if (currentStatusDetail == -2) {
+                        //         // $('.admin-toast').text('低电量设备无法改变状态');
+                        //         // $('.admin-toast').show();
+                        //         // setTimeout(function () {
+                        //         //     $('.admin-toast').hide();
+                        //         // }, 1500)
+                        //         return
+                        //     }
+                        //     $('#my-confirm').modal({
+                        //         // relatedTarget: this,
+                        //         onConfirm: function () {
+                        //             // index = e.target.dataset.index;
+                        //             console.log('sure: '+index)
+                        //             currentStatusDetail = e.target.dataset.currentstatus
+                      
                 } else {
                     // window.location.href = '/index.html'
                 }

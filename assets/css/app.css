@@ -2018,6 +2018,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-content-item-name{
   display: flex;
   flex-direction: column;
+  flex:1;
 }
 .admin-content-item-img{
   width: 65px;
@@ -2182,7 +2183,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   outline: none;
   border: 0;
   background: #ff9900;
-  width: 76%;
+  width: 78%;
 }
 .admin-detail-gw-other-name-input.active{
   border: 1px solid #000;
@@ -2201,4 +2202,53 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 }
 .admin-info-avatar{
   cursor: pointer;
+}
+.dialog{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .2);
+  z-index: 1500;
+  display: none;
+}
+.dialog-main{
+  width: 400px;
+  height: 200px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 4px;
+}
+.dialog-hd{
+  text-align: center;
+}
+.dialog-bd{
+  text-align: center;
+  margin-top: 20px;
+}
+.dialog-footer{
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dialog-btn{
+  margin-right: 60px;
+  cursor: pointer;
+  padding: 10px;
+  height: 35px;
+  text-align: center;
+  line-height: 15px;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+}
+.dialog-btn:last-child{
+  margin-right: 0;
+  background: #4169E1;
+  color: #fff;
 }

@@ -127,7 +127,6 @@
                                         <span class="admin-content-item-status">正常</span>
                                         <span class="am-icon-pause admin-content-item-icon admin-detail-status-pause"></span>
                                         <span class="am-icon-play admin-content-item-icon admin-detail-status-play"></span>
-                                        <span class="am-icon-play admin-content-item-icon admin-detail-status-offline">禁用</span>
                                     </div>
                                     
 
@@ -150,15 +149,15 @@
         </div>
     </div>
     <div class="admin-toast">不能为空</div>
-    <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
-        <div class="am-modal-dialog">
-            <div class="am-modal-hd">提示</div>
-            <div class="am-modal-bd">
+    <div class="dialog" id="dialog">
+        <div class="dialog-main">
+            <div class="dialog-hd">提示</div>
+            <div class="dialog-bd">
                 确定要修改该设备的状态吗？
             </div>
-            <div class="am-modal-footer">
-                <span class="am-modal-btn" data-am-modal-cancel>取消</span>
-                <span class="am-modal-btn" data-am-modal-confirm>确定</span>
+            <div class="dialog-footer">
+                <span class="dialog-btn dialog-cancle">取消</span>
+                <span class="dialog-btn dialog-sure">确定</span>
             </div>
         </div>
     </div>

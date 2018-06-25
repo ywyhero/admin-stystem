@@ -388,10 +388,10 @@ $(function () {
                                     success: (res) => {
                                         if (res.code == 0) {
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('启用')
-                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '-1')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', res.currentStatus)
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('禁用')
                                             // $('.admin-detail-item').eq(index).find('.admin-detail-content-open').addClass('active')
-                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '-1')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', res.currentStatus)
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('blue')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
@@ -430,9 +430,10 @@ $(function () {
                                     data: JSON.stringify(data),
                                     success: (res) => {
                                         if (res.code == 0) {
+                                            console.log(res.currentStatus)
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
-                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', '1')
-                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('空闲')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', res.currentStatus)
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '0')
                                             // $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')

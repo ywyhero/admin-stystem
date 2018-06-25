@@ -128,7 +128,6 @@ $(function () {
                         value: Number(Math.round(batteryLowLocks / totalLocks * 100)),
                         name: '低电量设备'
                     }]
-                    console.log(tempData)
                 chartData(tempData); //echarts饼图
                 var x = mapArr[0].point.split(',')[0];
                 var y = mapArr[0].point.split(',')[1];
@@ -169,9 +168,8 @@ $(function () {
             }
            
         },
-        error: function(err) {
-            window.location.href = '/index.html'
-        }
+        
+        
     })
   
     

@@ -373,7 +373,6 @@ $(function () {
                         $('.dialog-sure').unbind('click').on('click', function () {
                             var index = e.target.dataset.index;
                             var lid = e.target.dataset.lid;
-                            console.log(index)
                             if (currentStatusDetail == 1 || currentStatusDetail == 0) {
                                 data = {
                                     currentStatus: "-1"
@@ -430,16 +429,15 @@ $(function () {
                                     data: JSON.stringify(data),
                                     success: (res) => {
                                         if (res.code == 0) {
-                                            console.log(res.currentStatus)
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-close').attr('data-currentstatus', res.currentStatus)
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-content-open').attr('data-currentstatus', '0')
                                             // $('.admin-detail-item').eq(index).find('.admin-detail-content-open').removeClass('active')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')
-                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('blue')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
-                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('green')
+                                            $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('blue')
                                             $('#dialog').hide();
                                         } else {
                                             $('.admin-toast').text('接口出错');
@@ -468,26 +466,6 @@ $(function () {
                             $('#dialog').hide();
                         })
                     })
-                    // $('.admin-detail-lists').find('.admin-detail-content-close').add('#doc-confirm-toggle').
-                    // on('click', function (e) {
-                    //     var lid = e.target.dataset.lid;
-                    //     var currentStatusDetail = e.target.dataset.currentstatus;
-                    //     var index = e.target.dataset.index;
-                    //    console.log(index)
-                    //     if (currentStatusDetail == -2) {
-                    //         // $('.admin-toast').text('低电量设备无法改变状态');
-                    //         // $('.admin-toast').show();
-                    //         // setTimeout(function () {
-                    //         //     $('.admin-toast').hide();
-                    //         // }, 1500)
-                    //         return
-                    //     }
-                    //     $('#my-confirm').modal({
-                    //         // relatedTarget: this,
-                    //         onConfirm: function () {
-                    //             // index = e.target.dataset.index;
-                    //             console.log('sure: '+index)
-                    //             currentStatusDetail = e.target.dataset.currentstatus
 
                 } else {
                     // window.location.href = '/index.html'

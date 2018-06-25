@@ -2018,7 +2018,7 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
 .admin-content-item-name{
   display: flex;
   flex-direction: column;
-  flex:1;
+  width: 78%;
 }
 .admin-content-item-img{
   width: 65px;
@@ -2251,4 +2251,10 @@ ul.tpl-dropdown-content .tpl-dropdown-menu-messages-item .menu-messages-content 
   margin-right: 0;
   background: #4169E1;
   color: #fff;
+}
+.admin-content-item-other-name{
+  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

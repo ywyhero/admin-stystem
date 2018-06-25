@@ -85,7 +85,7 @@ $(function () {
                                 +           '<img class="admin-content-item-img" data-id=' + gwLists[i].gid + ' src="'+ imgSrc +'" />'
                                 +            '<div class="admin-content-item-name" data-id=' + gwLists[i].gid + '>'
                                 +                '<span data-id=' + gwLists[i].gid + '>网关'+ gwLists[i].gid +'</span>'
-                                +               ' <span data-id=' + gwLists[i].gid + '>别名：'+ gwLists[i].alias +'</span>'
+                                +               ' <span class="admin-content-item-other-name" data-id=' + gwLists[i].gid + '>别名：'+ gwLists[i].alias +'</span>'
                                 +           ' </div>'
                                 +        '</li>'
                                 +        '<li class="admin-content-item admin-content-address" title="'+gwLists[i].address.formatted_address+'">'

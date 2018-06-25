@@ -117,11 +117,11 @@ $(function () {
                     }
                     $('.admin-detail-lists').append(htmls)
                     for(var j = 0; j < lists.length; j++) {
-                        if(JSON.stringify(lists[j].currentUser) ==  '[]') {
-                            $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').hide()
-                        } else {
-                            $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').show()
-                        }
+                        // if(JSON.stringify(lists[j].currentUser) ==  '[]') {
+                        //     $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').hide()
+                        // } else {
+                        //     $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').show()
+                        // }
                         if (lists[j].currentStatus == 1) {
                             $('.admin-detail-item').eq(j).find('.admin-detail-list').removeClass('yellow')
                             $('.admin-detail-item').eq(j).find('.admin-detail-list').removeClass('green')
@@ -239,6 +239,7 @@ $(function () {
                                 if (res.code == 0) {
                                     $('.admin-detail-status-pause').hide()
                                     $('.admin-detail-status-play').show()
+                                    $('.admin-content-item-status').text('空闲')
                                 } else {
                                     $('.admin-toast').text('网络中断，请重试');
                                     $('.admin-toast').show();
@@ -266,6 +267,7 @@ $(function () {
                                 if (res.code == 0) {
                                     $('.admin-detail-status-pause').show()
                                     $('.admin-detail-status-play').hide()
+                                    $('.admin-content-item-status').text('使用中')
                                 } else {
                                     $('.admin-toast').text('网络中断，请重试');
                                     $('.admin-toast').show();
@@ -291,13 +293,13 @@ $(function () {
                             },
                             success: (res) => {
                                 if (res.code == 0) {
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
-                                    $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('blue')
-                                    $('#dialog').hide();
+                                    // $('.admin-detail-item').eq(index).find('.admin-detail-content-status').text('使用中')
+                                    // $('.admin-detail-item').eq(index).find('.admin-detail-content-close').text('禁用')
+                                    // $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('yellow')
+                                    // $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
+                                    // $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
+                                    // $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('blue')
+                                
                                 }
                             }
                         })

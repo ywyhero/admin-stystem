@@ -8,7 +8,7 @@ $(function () {
         var loginInfo = JSON.parse(window.sessionStorage.getItem('loginInfo'));
         $('.admin-detail-username').text(loginInfo.name);
         $('.admin-detail-avatar').attr('src', loginInfo.avatarUrl);
-        $('.admin-user-avatar-head').attr('src',loginInfo.avatarUrl);
+        $('.admin-user-avatar-head').attr('src', loginInfo.avatarUrl);
         var data = menu;
         //多级菜单
         $('#admin-detail-tree').tree({
@@ -90,7 +90,7 @@ $(function () {
                             currentStatus = '电量低';
                             closeText = '禁用';
                         }
-                       
+
                         var nickName = lists[i].currentUser.nickName ? lists[i].currentUser.nickName : '无人';
                         var alias = lists[i].alias ? lists[i].alias : '';
                         var imgSrc = lists[i].currentUser.avatarUrl ? lists[i].currentUser.avatarUrl : 'assets/img/timg.jpeg'
@@ -113,10 +113,10 @@ $(function () {
                             '</div>' +
                             '</div>'
                         htmls.push(html)
-                        
+
                     }
                     $('.admin-detail-lists').append(htmls)
-                    for(var j = 0; j < lists.length; j++) {
+                    for (var j = 0; j < lists.length; j++) {
                         // if(JSON.stringify(lists[j].currentUser) ==  '[]') {
                         //     $('.admin-detail-item').eq(j).find('.admin-detail-content-btns').hide()
                         // } else {
@@ -144,7 +144,7 @@ $(function () {
                             $('.admin-detail-item').eq(j).find('.admin-detail-list').addClass('red')
                         }
                     }
-                    
+
                     for (var j = 0; j < lists.length; j++) {
                         if (lists[j].currentStatus == -2) {
                             $('.admin-detail-item').eq(j).find('.admin-detail-content-open').addClass('active')
@@ -153,7 +153,7 @@ $(function () {
                             // $('.admin-detail-item').eq(j).find('.admin-detail-content-open').addClass('active')
                         }
                     }
-                    $('.admin-detail-item-edit').on('click',function(){
+                    $('.admin-detail-item-edit').on('click', function () {
                         if ($('.admin-detail-gw-other-name-input').attr('disabled')) {
                             $('.admin-detail-gw-other-name-input').attr('disabled', false)
                             $('.admin-detail-gw-other-name-input').addClass('active');
@@ -283,7 +283,7 @@ $(function () {
                         var lid = e.target.dataset.lid;
                         var currentStatus = e.target.dataset.currentstatus;
                         var index = e.target.dataset.index;
-                        
+
                         if (currentStatus == -2 || currentStatus == 1) return;
                         $.ajax({
                             type: "POST",
@@ -299,17 +299,30 @@ $(function () {
                                     // $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('green')
                                     // $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
                                     // $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('blue')
-                                
+                                } else {
+                                    $('.admin-toast').text('接口出错');
+                                    $('.admin-toast').show();
+                                    setTimeout(function () {
+                                        $('.admin-toast').hide();
+                                    }, 1500)
                                 }
+                            },
+                            error: function () {
+                                $('.admin-toast').text('接口出错');
+                                $('.admin-toast').show();
+                                setTimeout(function () {
+                                    $('.admin-toast').hide();
+                                }, 1500)
                             }
+
                         })
 
                     })
-                    $('.admin-detail-content-close').unbind('click').on('click', function(e){
+                    $('.admin-detail-content-close').unbind('click').on('click', function (e) {
                         var currentStatusDetail = e.target.dataset.currentstatus;
                         if (currentStatusDetail == -2) return;
                         $('#dialog').show();
-                        $('.dialog-sure').unbind('click').on('click', function(){
+                        $('.dialog-sure').unbind('click').on('click', function () {
                             var index = e.target.dataset.index;
                             var lid = e.target.dataset.lid;
                             console.log(index)
@@ -367,32 +380,32 @@ $(function () {
                                 })
                             }
                         })
-                          
-                        $('.dialog-cancle').on('click', function() {
+
+                        $('.dialog-cancle').on('click', function () {
                             $('#dialog').hide();
                         })
                     })
                     // $('.admin-detail-lists').find('.admin-detail-content-close').add('#doc-confirm-toggle').
-                        // on('click', function (e) {
-                        //     var lid = e.target.dataset.lid;
-                        //     var currentStatusDetail = e.target.dataset.currentstatus;
-                        //     var index = e.target.dataset.index;
-                        //    console.log(index)
-                        //     if (currentStatusDetail == -2) {
-                        //         // $('.admin-toast').text('低电量设备无法改变状态');
-                        //         // $('.admin-toast').show();
-                        //         // setTimeout(function () {
-                        //         //     $('.admin-toast').hide();
-                        //         // }, 1500)
-                        //         return
-                        //     }
-                        //     $('#my-confirm').modal({
-                        //         // relatedTarget: this,
-                        //         onConfirm: function () {
-                        //             // index = e.target.dataset.index;
-                        //             console.log('sure: '+index)
-                        //             currentStatusDetail = e.target.dataset.currentstatus
-                      
+                    // on('click', function (e) {
+                    //     var lid = e.target.dataset.lid;
+                    //     var currentStatusDetail = e.target.dataset.currentstatus;
+                    //     var index = e.target.dataset.index;
+                    //    console.log(index)
+                    //     if (currentStatusDetail == -2) {
+                    //         // $('.admin-toast').text('低电量设备无法改变状态');
+                    //         // $('.admin-toast').show();
+                    //         // setTimeout(function () {
+                    //         //     $('.admin-toast').hide();
+                    //         // }, 1500)
+                    //         return
+                    //     }
+                    //     $('#my-confirm').modal({
+                    //         // relatedTarget: this,
+                    //         onConfirm: function () {
+                    //             // index = e.target.dataset.index;
+                    //             console.log('sure: '+index)
+                    //             currentStatusDetail = e.target.dataset.currentstatus
+
                 } else {
                     // window.location.href = '/index.html'
                 }
@@ -401,10 +414,10 @@ $(function () {
                 window.location.href = '/index.html'
             }
         })
-    } else if(window.location.search.indexOf('?from=') > -1){
+    } else if (window.location.search.indexOf('?from=') > -1) {
         $('.admin-detail-gateway').hide();
         $('.admin-detail-head').hide();
-      
+
     }
 
 

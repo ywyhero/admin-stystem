@@ -182,7 +182,18 @@ $(function () {
                                             $('.admin-toast').hide();
                                         }, 1500)
                                     }
-                                }
+                                },
+                                error: function (err) {
+                                    if(err.responseJSON.code == -1) {
+                                         $('.admin-toast').text('接口出错');
+                                         $('.admin-toast').show();
+                                         setTimeout(function () {
+                                             $('.admin-toast').hide();
+                                         }, 1500)
+                                    } else{
+                                        window.location.href = '/index.html'
+                                    }
+                                 }
                             })
                         }
                     })
@@ -216,7 +227,18 @@ $(function () {
                                             $('.admin-toast').hide();
                                         }, 1500)
                                     }
-                                }
+                                },
+                                error: function (err) {
+                                    if(err.responseJSON.code == -1) {
+                                         $('.admin-toast').text('接口出错');
+                                         $('.admin-toast').show();
+                                         setTimeout(function () {
+                                             $('.admin-toast').hide();
+                                         }, 1500)
+                                    } else{
+                                        window.location.href = '/index.html'
+                                    }
+                                 }
                             })
                         }
                     })
@@ -247,7 +269,18 @@ $(function () {
                                         $('.admin-toast').hide();
                                     }, 1500)
                                 }
-                            }
+                            },
+                            error: function (err) {
+                                if(err.responseJSON.code == -1) {
+                                     $('.admin-toast').text('接口出错');
+                                     $('.admin-toast').show();
+                                     setTimeout(function () {
+                                         $('.admin-toast').hide();
+                                     }, 1500)
+                                } else{
+                                    window.location.href = '/index.html'
+                                }
+                             }
                         })
                     })
                     $('.admin-detail-status-play').on('click', function () {
@@ -275,7 +308,18 @@ $(function () {
                                         $('.admin-toast').hide();
                                     }, 1500)
                                 }
-                            }
+                            },
+                            error: function (err) {
+                                if(err.responseJSON.code == -1) {
+                                     $('.admin-toast').text('接口出错');
+                                     $('.admin-toast').show();
+                                     setTimeout(function () {
+                                         $('.admin-toast').hide();
+                                     }, 1500)
+                                } else{
+                                    window.location.href = '/index.html'
+                                }
+                             }
                         })
                     })
 
@@ -307,12 +351,16 @@ $(function () {
                                     }, 1500)
                                 }
                             },
-                            error: function () {
-                                $('.admin-toast').text('接口出错');
-                                $('.admin-toast').show();
-                                setTimeout(function () {
-                                    $('.admin-toast').hide();
-                                }, 1500)
+                            error: function (err) {
+                               if(err.responseJSON.code == -1) {
+                                    $('.admin-toast').text('接口出错');
+                                    $('.admin-toast').show();
+                                    setTimeout(function () {
+                                        $('.admin-toast').hide();
+                                    }, 1500)
+                               } else{
+                                   window.location.href = '/index.html'
+                               }
                             }
 
                         })
@@ -349,8 +397,25 @@ $(function () {
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('yellow')
                                             $('#dialog').hide();
+                                        } else {
+                                            $('.admin-toast').text('接口出错');
+                                            $('.admin-toast').show();
+                                            setTimeout(function () {
+                                                $('.admin-toast').hide();
+                                            }, 1500)
                                         }
-                                    }
+                                    },
+                                    error: function (err) {
+                                        if(err.responseJSON.code == -1) {
+                                             $('.admin-toast').text('接口出错');
+                                             $('.admin-toast').show();
+                                             setTimeout(function () {
+                                                 $('.admin-toast').hide();
+                                             }, 1500)
+                                        } else{
+                                            window.location.href = '/index.html'
+                                        }
+                                     }
                                 })
                             } else if (currentStatusDetail == -1) {
                                 data = {
@@ -375,8 +440,25 @@ $(function () {
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').removeClass('red')
                                             $('.admin-detail-item').eq(index).find('.admin-detail-list').addClass('green')
                                             $('#dialog').hide();
+                                        } else {
+                                            $('.admin-toast').text('接口出错');
+                                            $('.admin-toast').show();
+                                            setTimeout(function () {
+                                                $('.admin-toast').hide();
+                                            }, 1500)
                                         }
-                                    }
+                                    },
+                                    error: function (err) {
+                                        if(err.responseJSON.code == -1) {
+                                             $('.admin-toast').text('接口出错');
+                                             $('.admin-toast').show();
+                                             setTimeout(function () {
+                                                 $('.admin-toast').hide();
+                                             }, 1500)
+                                        } else{
+                                            window.location.href = '/index.html'
+                                        }
+                                     }
                                 })
                             }
                         })
@@ -410,9 +492,17 @@ $(function () {
                     // window.location.href = '/index.html'
                 }
             },
-            error: function () {
-                window.location.href = '/index.html'
-            }
+            error: function (err) {
+                if(err.responseJSON.code == -1) {
+                     $('.admin-toast').text('接口出错');
+                     $('.admin-toast').show();
+                     setTimeout(function () {
+                         $('.admin-toast').hide();
+                     }, 1500)
+                } else{
+                    window.location.href = '/index.html'
+                }
+             }
         })
     } else if (window.location.search.indexOf('?from=') > -1) {
         $('.admin-detail-gateway').hide();

@@ -62,16 +62,16 @@ $(function () {
 
                     } else {
                         var newPwd = $('.admin-info-item-password').val().trim();
-                        if(res.admin.info.passwd == newPwd) {
+                        if (res.admin.info.passwd == newPwd) {
                             return
                         }
-                        if(newPwd === ''){
+                        if (newPwd === '') {
                             $('.admin-toast').show();
                             $('.admin-toast').text('密码不能为空');
                             setTimeout(function () {
                                 $('.admin-toast').hide();
                             }, 1500)
-                            return 
+                            return
                         }
                         var changeData = {
                             "oldPasswd": res.admin.info.passwd,
@@ -86,23 +86,46 @@ $(function () {
                                 'Authorization': 'Bearer ' + token
                             },
                             success: function (res) {
-                                if(res.code == 0) {
+                                if (res.code == 0) {
                                     //修改成功后跳转页面
                                     $('.admin-info-item-password').attr('disabled', true)
                                     $('.admin-info-item-password').removeClass('active');
                                     window.location.href = '/index.html'
                                 } else {
-                                    window.location.href = '/index.html'
+                                    $('.admin-toast').text('接口出错');
+                                    $('.admin-toast').show();
+                                    setTimeout(function () {
+                                        $('.admin-toast').hide();
+                                    }, 1500)
                                 }
                             },
-                            error: function(){
-                                window.location.href = '/index.html'
+                            error: function (err) {
+                                if (err.responseJSON.code == -1) {
+                                    $('.admin-toast').text('接口出错');
+                                    $('.admin-toast').show();
+                                    setTimeout(function () {
+                                        $('.admin-toast').hide();
+                                    }, 1500)
+                                } else {
+                                    window.location.href = '/index.html'
+                                }
                             }
                         })
                     }
                 })
             }
 
+        },
+        error: function (err) {
+            if (err.responseJSON.code == -1) {
+                $('.admin-toast').text('接口出错');
+                $('.admin-toast').show();
+                setTimeout(function () {
+                    $('.admin-toast').hide();
+                }, 1500)
+            } else {
+                window.location.href = '/index.html'
+            }
         }
     })
 
